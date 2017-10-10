@@ -1,0 +1,9 @@
+apply from: "$buildscript.sourceFile/../java.gradle"
+
+check.dependsOn 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    source  android.sourceSets.main.java.srcDirs
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}

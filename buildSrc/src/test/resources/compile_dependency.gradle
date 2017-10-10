@@ -1,0 +1,5 @@
+dependencies {
+    compile 'com.android.support:support-annotations:23.1.1-SNAPSHOT'
+    testCompile 'junit:junit:4.12'
+    provided 'group:artifact:1.0'
+}
