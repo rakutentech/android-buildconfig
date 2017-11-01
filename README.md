@@ -134,7 +134,7 @@ apply from: '../config/jacoco.gradle'
 // you can stil overwrite the defaults, e.g.
 android {
     defaultConfig {
-        resValue 'string', 'analytics__version', project.MODULE_VERSION
+        resValue 'string', 'analytics__version', project.version
         consumerProguardFiles 'proguard-rules.txt'
     }
   resourcePrefix 'analytics_'
