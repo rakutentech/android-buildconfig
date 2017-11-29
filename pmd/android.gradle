@@ -1,0 +1,8 @@
+apply plugin: 'pmd'
+check.dependsOn 'pmd'
+task pmd(type: Pmd,
+    group: 'verification',
+    description: 'pmd checks for main and test java sourcesets of android projects') {
+  ruleSetFiles = files(rootProject.file('config/pmd/pmd-ruleset.xml'))
+  source android.sourceSets.main.java.srcDirs + android.sourceSets.test.java.srcDirs
+}
