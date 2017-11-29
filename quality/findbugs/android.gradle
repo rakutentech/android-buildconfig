@@ -6,7 +6,7 @@ task findbugs(type: FindBugs,
         description: 'findbugs checks for main and test java sourcesets of android projects',
         dependsOn: ['compileDebugSources','compileReleaseSources']) {
   ignoreFailures = false
-  excludeFilter rootProject.file('config/findbugs/findbugs-filter.xml')
+  excludeFilter rootProject.file('config/quality/findbugs/findbugs-filter.xml')
   classes = fileTree("$project.buildDir/intermediates/classes/debug")
   source 'src'
   include '**/*.java'
