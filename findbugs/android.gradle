@@ -1,0 +1,21 @@
+apply plugin: 'findbugs'
+
+check.dependsOn 'findbugs'
+task findbugs(type: FindBugs, 
+        group: 'verification',
+        description: 'findbugs checks for main and test java sourcesets of android projects',
+        dependsOn: ['compileDebugSources','compileReleaseSources']) {
+  ignoreFailures = false
+  excludeFilter rootProject.file('config/findbugs/findbugs-filter.xml')
+  classes = fileTree("$project.buildDir/intermediates/classes/debug")
+  source 'src'
+  include '**/*.java'
+  exclude '**/gen/**'
+  classpath = files()
+  effort = 'max'
+
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
