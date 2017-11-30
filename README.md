@@ -76,32 +76,46 @@ task preReleaseCheck(type: CheckGradleFilesForSnapshotDependencies) {
 }
 ```
 
-## Checkstyle configuration
+## Quality Tools
+These are default configurations for [checkstyle](https://github.com/checkstyle/checkstyle), [pmd](https://github.com/pmd/pmd) and [findbugs](https://github.com/findbugsproject/findbugs), they do the following:
+* configure a project to use the tool by including a single script
+* register a task that will run as part of the `check` task
 
+### Checkstyle
 Rules for the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) are provided in `checkstyle/checkstyle.xml`.
 To make Android Studio aware of the rules, you'll need to install the [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea).
 
-### Example (Java plugin)
-
 ```groovy
-apply from: '../config/checkstyle/java.gradle'
+// java plugin
+apply from: '../config/quality/checkstyle/java.gradle'
+// android plugin
+apply from: '../config/quality/checkstyle/android.gradle'
 
+// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
-    // extra configuration options
     ignoreFailures false
 }
 ```
 
-### Example (Android plugin)
-
-Since the Checkstyle plugin only adds a `checkstyle` task to Java project, you need to manually create one if using the Android plugin.
-
+### PMD
 ```groovy
-apply from: '../config/checkstyle/android.gradle'
+// android plugin
+apply from: '../config/quality/pmd/android.gradle'
 
-checkstyle {
-    // extra configuration options
-    ignoreFailures false
+// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html
+pmd {
+  consoleOutput = false
+}
+```
+
+### Findbugs
+```groovy
+// android plugin
+apply from: '../config/quality/findbugs/android.gradle'
+
+// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html
+findbugs {
+  showProgress = false
 }
 ```
 

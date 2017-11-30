@@ -1,9 +1,23 @@
 apply plugin: 'pmd'
 
+// see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html
+pmd {
+  consoleOutput = true
+  // currently only 5 works (see https://github.com/pmd/pmd/issues/394)  a fix is scheduled for pmd 6.0
+  rulePriority = 5 // 1 - 5, 5 is lowest
+  ruleSetFiles = files(rootProject.file('config/quality/pmd/pmd-ruleset.xml'))
+  targetJdk = TargetJdk.VERSION_1_7
+  toolVersion = '5.8.1' // see https://github.com/pmd/pmd/releases
+}
+
 check.dependsOn 'pmd'
 task pmd(type: Pmd,
     group: 'verification',
     description: 'pmd checks for main and test java sourcesets of android projects') {
-  ruleSetFiles = files(rootProject.file('config/quality/pmd/pmd-ruleset.xml'))
+
   source android.sourceSets.main.java.srcDirs + android.sourceSets.test.java.srcDirs
+  reports {
+    html.enabled = true
+    xml.enabled = true
+  }
 }
