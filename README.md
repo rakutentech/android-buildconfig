@@ -81,6 +81,13 @@ These are default configurations for [checkstyle](https://github.com/checkstyle/
 * configure a project to use the tool by including a single script
 * register a task that will run as part of the `check` task
 
+```groovy
+// android plugin -  applies all checkstyle, pmd and findbugs to android projects
+apply from: '../config/quality/android.gradle'
+// java plugin - applies only checkstyle to java projects (TODO: add pmd and findbugs)
+apply from: '../config/quality/java.gradle'
+```
+
 ### Checkstyle
 Rules for the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) are provided in `checkstyle/checkstyle.xml`.
 To make Android Studio aware of the rules, you'll need to install the [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea).
