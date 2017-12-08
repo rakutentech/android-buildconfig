@@ -29,3 +29,9 @@ task findbugs(type: FindBugs,
 dependencies {
   provided 'com.google.code.findbugs:annotations:3.0.0'
 }
+
+android {
+  defaultConfig {
+    consumerProguardFiles rootProject.file('config/quality/findbugs/proguard-rules')
+  }
+}
