@@ -25,7 +25,3 @@ task findbugs(type: FindBugs,
     html.enabled = true
   }
 }
-
-dependencies {
-  provided 'com.google.code.findbugs:annotations:3.0.0'
-}

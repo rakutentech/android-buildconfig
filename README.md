@@ -124,6 +124,10 @@ apply from: '../config/quality/findbugs/android.gradle'
 findbugs {
   showProgress = false
 }
+// if you want to use findbugs annotations:
+dependencies {
+  compile 'com.google.code.findbugs:annotations:3.0.0'
+}
 ```
 
 ## Default Configurations
