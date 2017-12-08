@@ -1,0 +1,31 @@
+apply plugin: 'findbugs'
+
+findbugs {
+  toolVersion = "3.0.1" // see https://github.com/findbugsproject/findbugs/releases
+  effort = 'max' //  min, default, or max.
+  ignoreFailures = false
+  excludeFilter = rootProject.file('config/quality/findbugs/findbugs-filter.xml')
+  reportLevel = 'low' // low, medium, high 
+}
+
+check.dependsOn 'findbugs'
+task findbugs(type: FindBugs, 
+        group: 'verification',
+        description: 'findbugs checks for main and test java sourcesets of android projects',
+        dependsOn: ['compileDebugSources','compileReleaseSources']) {
+  
+  classes = fileTree("$project.buildDir/intermediates/classes/debug")
+  source 'src'
+  include '**/*.java'
+  exclude '**/gen/**'
+  classpath = files()
+
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+dependencies {
+  provided 'com.google.code.findbugs:annotations:3.0.0'
+}

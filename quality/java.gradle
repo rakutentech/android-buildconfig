@@ -1,0 +1,3 @@
+apply from: "$CONFIG.configDir/quality/checkstyle/java.gradle"
+// TODO: add pmd
+// TODO: add findbugs
