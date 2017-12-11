@@ -1,3 +1,7 @@
 apply from: "$CONFIG.configDir/quality/checkstyle/android.gradle"
 apply from: "$CONFIG.configDir/quality/findbugs/android.gradle"
 apply from: "$CONFIG.configDir/quality/pmd/android.gradle"
+
+if(project.plugins.hasPlugin("kotlin-android")) {
+    apply from: "$CONFIG.configDir/quality/ktlint/android.gradle"
+}
