@@ -1,9 +1,11 @@
 project.buildscript.repositories.ext {
-    // 3rd-party repositories
-    gradle = {
-        project.buildscript.repositories.maven { url 'https://plugins.gradle.org/m2/' }
-    }
-    jitpack = {
-        project.buildscript.repositories.maven { url 'https://jitpack.io' }
-    }
+  // 3rd-party repositories
+  gradle = { project.buildscript.repositories.maven { url 'https://plugins.gradle.org/m2/' } }
+  jitpack = { project.buildscript.repositories.maven { url 'https://jitpack.io' } }
+}
+
+project.allprojects {
+  it.repositories.ext {
+    jitpack = { repositories.maven { url 'https://jitpack.io' } }
+  }
 }

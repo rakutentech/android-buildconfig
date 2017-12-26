@@ -1,6 +1,6 @@
 buildscript {
   ext.CONFIG = [
-    configDir: getSourceFile().parent,
+      configDir: getSourceFile().parent,
   ]
 }
 

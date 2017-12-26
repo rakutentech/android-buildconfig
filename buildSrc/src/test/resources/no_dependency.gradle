@@ -1,24 +1,24 @@
 buildscript {
-    repositories {
-        jcenter()
-    }
+  repositories {
+    jcenter()
+  }
 }
 
 repositories {
-    jcenter()
+  jcenter()
 }
 
 allprojects {
-    repositories {
-        maven {
-            url ARTIFACTORY_SNAPSHOT
-        }
-        maven {
-            url ARTIFACTORY_RELEASE
-        }
+  repositories {
+    maven {
+      url ARTIFACTORY_SNAPSHOT
     }
+    maven {
+      url ARTIFACTORY_RELEASE
+    }
+  }
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }

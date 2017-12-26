@@ -1,33 +1,33 @@
 android {
-    compileSdkVersion CONFIG.versions.android.sdk.compile
-    buildToolsVersion CONFIG.versions.android.tools
+  compileSdkVersion CONFIG.versions.android.sdk.compile
+  buildToolsVersion CONFIG.versions.android.tools
 
-    defaultConfig {
-        minSdkVersion CONFIG.versions.android.sdk.min
-        targetSdkVersion CONFIG.versions.android.sdk.target
-        versionName project.version
+  defaultConfig {
+    minSdkVersion CONFIG.versions.android.sdk.min
+    targetSdkVersion CONFIG.versions.android.sdk.target
+    versionName project.version
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.toVersion(CONFIG.versions.java)
+    targetCompatibility JavaVersion.toVersion(CONFIG.versions.java)
+  }
+
+  testOptions.unitTests.all {
+    maxParallelForks 2
+
+    testLogging {
+      events "skipped", "failed"
+      showStandardStreams = true
+      showCauses = true
+      showExceptions = true
+      showStackTraces = true
+      exceptionFormat = 'full'
     }
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.toVersion(CONFIG.versions.java)
-        targetCompatibility JavaVersion.toVersion(CONFIG.versions.java)
-    }
-
-    testOptions.unitTests.all {
-        maxParallelForks 2
-
-        testLogging {
-            events "skipped", "failed"
-            showStandardStreams = true
-            showCauses          = true
-            showExceptions      = true
-            showStackTraces     = true
-            exceptionFormat     = 'full'
-        }
-    }
-
-    packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-    }
+  packagingOptions {
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+  }
 }
