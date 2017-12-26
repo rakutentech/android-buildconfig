@@ -54,3 +54,4 @@ To ensure usability we follow these rules:
 * Add semantic versioning & documentation guidelines
 * Move all configurations into folders
 * Split up README into sub-READMEs and move to respective folders
+* Merge Kotlin into master
