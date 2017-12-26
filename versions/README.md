@@ -6,7 +6,8 @@ To keep all our libraries' transitive dependecies in sync we use this shared ver
 
 * `CONFIG.configDir` exports the path to the config folder.
 * `CONFIG.versions` exports version information for runtime dependendencies and target environment across SDK components.
-* `jitpack()` and `gradle()` aliases in repository closure.
+* `jitpack()` and `gradle()` aliases in repositories closure (gradle plugin repo only works for 
+`buildscript.repositories` closure).
 
 ## Example
 
@@ -15,6 +16,8 @@ buildscript {
   apply from: "config/index.gradle"
   repositories {
     jcenter()
+    jitpack()
+    gradle()
   }
   dependencies {
     classpath "com.android.tools.build:gradle:${CONFIG.versions.android.plugin}"
