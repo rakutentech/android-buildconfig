@@ -30,13 +30,4 @@ ext.CONFIG.versions = [
     gson:           '2.8.1',
     threetenbp:     '1.3.6',
   ],
-
-  // Internal shadows
-  internal: [
-    timber: '4.+',
-    dagger: '2.11',
-    okio:   '1.13.0',
-    okhttp: '3.8.1',
-  ]
 ]
-// vim:et:sts=2:sw=2:ts=2:ff=unix:
