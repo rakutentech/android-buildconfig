@@ -9,7 +9,7 @@ findbugs {
 }
 
 check.dependsOn 'findbugs'
-task findbugs(type: FindBugs, 
+task findbugs(type: FindBugs,
         group: 'verification',
         description: 'findbugs checks for main and test java sourcesets of android projects',
         dependsOn: ['compileDebugSources','compileReleaseSources']) {
@@ -18,7 +18,7 @@ task findbugs(type: FindBugs,
   source 'src'
   include '**/*.java'
   exclude '**/gen/**'
-  classpath = files()
+  classpath = files(android.bootClasspath)
 
   reports {
     xml.enabled = false
