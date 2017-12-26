@@ -25,7 +25,7 @@ From there, you can reference the global `CONFIG` object from any gradle file in
 By default only [versions](versions/README.md) is added to the project. You can apply configurations as desired.
 
 ## Available configurations
-* [Versions](versions/REAMDE.md)
+* [Versions](versions/README.md)
 * [Android project defaults](android/README.md)
 * [Quality Tools](quality/README.md)
   - Checkstyle
