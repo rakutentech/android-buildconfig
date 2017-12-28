@@ -2,10 +2,10 @@ apply plugin: 'checkstyle'
 
 // see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
-    toolVersion '8.5' // see https://github.com/checkstyle/checkstyle/releases
-    configFile rootProject.file('config/quality/checkstyle/checkstyle.xml')
-    ignoreFailures false
-    showViolations true
-    maxErrors 0
-    maxWarnings Integer.MAX_VALUE
+  toolVersion '8.5' // see https://github.com/checkstyle/checkstyle/releases
+  configFile rootProject.file('config/quality/checkstyle/checkstyle.xml')
+  ignoreFailures false
+  showViolations true
+  maxErrors 0
+  maxWarnings Integer.MAX_VALUE
 }

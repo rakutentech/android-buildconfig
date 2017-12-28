@@ -1,18 +1,15 @@
-# Shared Build Configuration for Android SDK modules
-
-This repository contains common configuration to be used across our Android libraries.
-It can be included in a repo using any method: git submodule, checked-out copy or subtree merging.
+# Shared Build Configuration for Android libraries
+This repository contains common configuration to be used across our Android libraries. The advantage of sharing these configurations in mainly consistency of configuration among multiple libraries and reduction of boilerplate.
 
 ## Kickstart
+First add the subomudle to your project:
 
 ```sh
 $ cd my_project
 $ git submodule add git@github.com:rakutentech/android-buildconfig.git config
 ```
 
-## Build Scripts
-
-Then, modify your root `build.gradle` to apply the configuration:
+Then modify your root `build.gradle` to apply the configuration:
 
 ```groovy
 buildscript {
@@ -25,142 +22,36 @@ buildscript {
 
 From there, you can reference the global `CONFIG` object from any gradle file inside your project.
 
-### What's provided
+By default only [versions](versions/README.md) is added to the project. You can apply configurations as desired.
 
-* `CONFIG.configDir` exports the path to the config folder.
-* `CONFIG.versions` exports version information for runtime dependendencies and target environment across SDK components. Note that testing dependencies, annotation processors etc are omitted for now, as those only impact the local build environment rather than the consumer applications.
+## Available configurations
+* [Versions](versions/README.md)
+* [Android project defaults](android/README.md)
+* [Quality Tools](quality/README.md)
+  - Checkstyle
+  - Findbugs
+  - Jacoco
+  - PMD
+* [BuildSrc](buildSrc/README.md)
 
-### Example
+## Versioning Contract
+This configuration's versions follow [semantic versioning](https://semver.org/). We align all libraries that we bundle together on the same major version of this configuration. To clarify the semantics in the context of shared configurations here are a few examples of what are breaking changes (major version change), backwards compatible improvements (minor version change) and bug fixes (patch level):
 
-```groovy
-buildscript {
-    apply from: "config/index.gradle"
+Major | Minor | Patch
+----- | ----- | ------
+move gradle file to a different path | add new configuration | change minor or patch version of dependency
+remove gradle file | add new task in existing configuration | refactor
+change major version of dependencies | add new dependency version |
+change of the versioning contract | reduce boilerplate for consumer | 
 
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:${CONFIG.versions.android.plugin}"
-    }
-}
+To ensure usability we follow these rules:
+* Every version has a corresponding git tag of the format `Major.Minor.Patch`
+* Every version must describe the changes in [versions section](#versions)
+* Major version changes must also provide a migration guide from the previous major version
 
-allprojects {
-    repositories {
-        jitpack()
-    }
-}
-```
-
-## BuildSrc
-
-Include `config/buildSrc/build.gradle` in your projects `buildSrc/build.gradle`
-
-```groovy
-apply from: '../config/buildSrc/build.gradle'
-```
-
-### What's provided
-
-* `CheckGradleFilesForSnapshotDependencies` task that will parse all `*.gradle` files for bulidscript classpath dependencies and project compile dependencies for pre release versions (identified by `-` in the version, following [semver.org](http://semver.org/))
-
-### Example
-
-```groovy
-import com.rakuten.tech.tool.CheckGradleFilesForSnapshotDependencies
-task preReleaseCheck(type: CheckGradleFilesForSnapshotDependencies) {
-     exclude = [
-             ~/.*\/config\/.*\.gradle/,
-             ~/.*\/buildSrc\/.*\.gradle/,
-             ~/.*\/TestUI\/.*\.gradle/,
-             ]
-}
-```
-
-## Quality Tools
-These are default configurations for [checkstyle](https://github.com/checkstyle/checkstyle), [pmd](https://github.com/pmd/pmd) and [findbugs](https://github.com/findbugsproject/findbugs), they do the following:
-* configure a project to use the tool by including a single script
-* register a task that will run as part of the `check` task
-
-```groovy
-// android plugin -  applies all checkstyle, pmd and findbugs to android projects
-apply from: '../config/quality/android.gradle'
-// java plugin - applies only checkstyle to java projects (TODO: add pmd and findbugs)
-apply from: '../config/quality/java.gradle'
-```
-
-### Checkstyle
-Rules for the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) are provided in `checkstyle/checkstyle.xml`.
-To make Android Studio aware of the rules, you'll need to install the [CheckStyle-IDEA plugin](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea).
-
-```groovy
-// java plugin
-apply from: '../config/quality/checkstyle/java.gradle'
-// android plugin
-apply from: '../config/quality/checkstyle/android.gradle'
-
-// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
-checkstyle {
-    ignoreFailures false
-}
-```
-
-### PMD
-```groovy
-// android plugin
-apply from: '../config/quality/pmd/android.gradle'
-
-// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html
-pmd {
-  consoleOutput = false
-}
-```
-
-### Findbugs
-```groovy
-// android plugin
-apply from: '../config/quality/findbugs/android.gradle'
-
-// optional: extra configuration options,  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html
-findbugs {
-  showProgress = false
-}
-```
-
-## Default Configurations
-
-To reduce the code duplication there are 3 default configs:
-
-* `jacoco.gradle`
-* `android/library.gradle`
-* `android/application.gradle`
-
-Unfortunately you need to put the respective plugin on the classpath yourself 😢. Example
-
-
-```groovy
-// root script
-buildscript {
-    apply from: "config/index.gradle"
-    repositories {
-        artifactoryRelease()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-    }
-}
-// sub project
-apply from: '../config/android/library.gradle'
-apply from: '../config/jacoco.gradle'
-// you can stil overwrite the defaults, e.g.
-android {
-    defaultConfig {
-        resValue 'string', 'analytics__version', project.version
-        consumerProguardFiles 'proguard-rules.txt'
-    }
-  resourcePrefix 'analytics_'
-}
-jacocoAndroidUnitTestReport {
-    xml.enabled false
-}
-```
+## Versions <a name="versions"></a>
+### 1.0 (2017-12-26)
+* Add semantic versioning & documentation guidelines
+* Move all configurations into folders
+* Split up README into sub-READMEs and move to respective folders
+* Merge Kotlin into master
