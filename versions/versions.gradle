@@ -17,7 +17,6 @@ ext.CONFIG.versions = [
             volley      : '1.0.0',
         ],
         plugin: '3.0.0',
-        tools:  '26.0.2',
         sdk      : [
             compile: 26,
             target : 26,
