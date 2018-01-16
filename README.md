@@ -54,6 +54,7 @@ To ensure usability we follow these rules:
 ### 1.1.0 (in progress)
 * Add doclava javadoc generation
 * Quality/Checkstyl: Change checkstyle severity from `warning` to `error` so that non-compliant code fails the build (can still be disabled with `ignoreFailues` flag in quality task extensions)
+* Quality/jacocco: automatically make `check` depend on `jacacoTestReport`
 
 ### 1.0.0 (2017-12-26)
 * Add semantic versioning & documentation guidelines
