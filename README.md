@@ -51,8 +51,8 @@ To ensure usability we follow these rules:
 * Major version changes must also provide a migration guide from the previous major version
 
 ## Versions <a name="versions"></a>
-### 1.1.0 (in progress)
-* Add doclava javadoc generation
+### 1.1.0 (2018-01-16)
+* Documantation: Add doclava javadoc generation
 * Quality/Checkstyl: Change checkstyle severity from `warning` to `error` so that non-compliant code fails the build (can still be disabled with `ignoreFailues` flag in quality task extensions)
 * Quality/jacocco: automatically make `check` depend on `jacacoTestReport`
 
