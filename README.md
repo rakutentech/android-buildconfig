@@ -33,6 +33,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
   - Jacoco
   - PMD
 * [BuildSrc](buildSrc/README.md)
+* [Documentation](documentation/README.md)
 
 ## Versioning Contract
 This configuration's versions follow [semantic versioning](https://semver.org/). We align all libraries that we bundle together on the same major version of this configuration. To clarify the semantics in the context of shared configurations here are a few examples of what are breaking changes (major version change), backwards compatible improvements (minor version change) and bug fixes (patch level):
@@ -50,7 +51,12 @@ To ensure usability we follow these rules:
 * Major version changes must also provide a migration guide from the previous major version
 
 ## Versions <a name="versions"></a>
-### 1.0 (2017-12-26)
+### 1.1.0 (2018-01-16)
+* Documantation: Add doclava javadoc generation
+* Quality/Checkstyl: Change checkstyle severity from `warning` to `error` so that non-compliant code fails the build (can still be disabled with `ignoreFailues` flag in quality task extensions)
+* Quality/jacocco: automatically make `check` depend on `jacacoTestReport`
+
+### 1.0.0 (2017-12-26)
 * Add semantic versioning & documentation guidelines
 * Move all configurations into folders
 * Split up README into sub-READMEs and move to respective folders
