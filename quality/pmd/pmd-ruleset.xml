@@ -153,6 +153,7 @@
         <exclude name="LongVariable"/>
         <exclude name="ShortMethodName"/>
         <exclude name="AbstractNaming"/>
+        <exclude name="AvoidFieldNameMatchingMethodName"/>
     </rule>
 
     <!-- Optimization (https://pmd.github.io/latest/pmd-java/rules/java/optimizations.html) -->
