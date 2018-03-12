@@ -13,7 +13,9 @@ task copyImages(type: Copy) {
   into "$buildDir/javadocs/reference/images"
 }
 
-task generateDoclava(type: Javadoc, dependsOn: project.configurations.doclava) {
+task generateDoclava(type: Javadoc, 
+  group: 'publishing',
+  dependsOn: project.configurations.doclava) {
   dependsOn copyImages
   failOnError = true
   title = null
