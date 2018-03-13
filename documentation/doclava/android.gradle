@@ -6,17 +6,18 @@ dependencies {
   doclava 'com.google.doclava:doclava:1.0.6'
 }
 
+import java.nio.file.Paths
+
 if(!project.hasProperty('documentation')) project.ext.documentation = [:]
 
 task copyImages(type: Copy) {
-  from "${project.rootDir}/images"
-  into "$buildDir/javadocs/reference/images"
+  from Paths.get("$rootDir", "images")
+  into Paths.get("$buildDir", "javadocs", "reference", "images")
 }
 
-task generateDoclava(type: Javadoc, 
-  group: 'publishing',
-  dependsOn: project.configurations.doclava) {
-  dependsOn copyImages
+task generateDoclava(type: Javadoc, group: 'publishing') {
+  dependsOn copyImages, configurations.doclava, 'assembleRelease'
+
   failOnError = true
   title = null
   source = android.sourceSets.main.java.srcDirs
@@ -26,57 +27,34 @@ task generateDoclava(type: Javadoc,
     doclet "com.google.doclava.Doclava"
     memberLevel = JavadocMemberLevel.PROTECTED
 
-    if(project.documentation.javadocOverview) {
+    if (project.documentation.javadocOverview) {
         overview = project.documentation.javadocOverview
     }
 
-    addStringOption "hdf project.name", "${project.name} - ${project.version}"
+    addStringOption "hdf project.name", "$project.name - $project.version"
     addStringOption "hdf project.version", project.version
-    addStringOption "federate android", "http://developer.android.com/reference" 
+    addStringOption "apiversion", project.version
+
+    addStringOption "federate android", "http://developer.android.com/reference"
     // TODO: generate more recent android platform xml file
     // see https://code.google.com/archive/p/doclava/wikis/FederatedDocs.wiki
-    addStringOption "federationxml android", "${CONFIG.configDir}/documentation/doclava/android-22.xml"
+    addStringOption "federationxml android", Paths.get("$CONFIG.configDir", "documentation", "doclava", "android-22.xml").toString()
     // TODO: generate doclava xml for support libs
     // TODO: customize template
-    // addStringOption "templatedir", "${CONFIG.configDir}/documentation/doclava/template"
+    // addStringOption "templatedir", Paths.get(CONFIG.configDir, "documentation", "doclava", "template").toString()
   }
 
-  destinationDir = new File(buildDir, 'javadocs')
-  classpath += project.files(android.getBootClasspath())
-  classpath += configurations.compile
-  classpath += configurations.provided
-  def aarDependencies = classpath.filter { it.name.endsWith('.aar') }
-  classpath -= aarDependencies
-  aarDependencies.each { aar ->
-    // Extract classes.jar from the AAR dependency, and add it to the javadoc classpath
-    def outputPath = "$buildDir/tmp/aarJar/${aar.name.replace('.aar', '.jar')}"
-    classpath += files(outputPath)
+  project.afterEvaluate {
+    destinationDir = new File(buildDir, 'javadocs')
 
-    // Use a task so the actual extraction only happens before the javadoc task is run
-    dependsOn task(name: "extract_${aar.name}").doLast {
-      extractEntry(aar, 'classes.jar', outputPath)
-    }
+    // Android
+    classpath += files(android.getBootClasspath())
+
+    // All the dependencies
+    classpath += android.libraryVariants.find { it.name == "release" }.javaCompile.classpath
+
+    // Generated classes
+    classpath += files(Paths.get("$buildDir", "intermediates", "classes", "release"))
   }
 }
 
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.zip.ZipFile
-
-private static def extractEntry(archive, entryPath, outputPath) {
-  if (!archive.exists()) {
-    throw new GradleException("archive $archive not found")
-  }
-
-  def zip = new ZipFile(archive)
-  zip.entries().each {
-    if (it.name == entryPath) {
-      def path = Paths.get(outputPath)
-      if (!Files.exists(path)) {
-        Files.createDirectories(path.getParent())
-        Files.copy(zip.getInputStream(it), path)
-      }
-    }
-  }
-  zip.close()
-}

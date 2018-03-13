@@ -28,7 +28,7 @@ class GradleBuildScript {
   def compileDependencies() {
     def dependenciesBlock = topLevel 'dependencies'
     dependenciesBlock ? findAllStatements(dependenciesBlock, {
-      it.toLowerCase().contains('compile')
+      it.toLowerCase() =~ /^(?:compile|compileonly|api|implementation)$/
     }) : []
   }
 
