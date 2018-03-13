@@ -52,7 +52,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 ### 1.2.0 (In Progress)
-* Quality/Pmd: Exclude `AvoidFieldNameMatchingMethodName` rule as google style mentions nothing about getters and setters.
+* Quality/Pmd: Exclude `AvoidFieldNameMatchingMethodName`, `JUnitTestContainsTooManyAsserts`, `CommentDefaultAccessModifier`, `MethodArgumentCouldBeFinal` rules
+* Quality/Checkstyle: Add support for `@SuppressWarnings("checkstyle:RuleName)` suppression of checkstyle rules
+* Quality/Findbugs: Setup complete classpath for findbugs task, relying on `android.libraryVariants`. Note that this does not work on android applications, but can be adapted to that usecase if it becomes necessary 
 
 ### 1.1.0 (2018-01-16)
 * Documantation: Add doclava javadoc generation
