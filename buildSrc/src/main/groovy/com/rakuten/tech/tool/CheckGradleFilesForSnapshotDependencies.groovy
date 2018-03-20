@@ -35,32 +35,34 @@ public class CheckGradleFilesForSnapshotDependencies extends DefaultTask {
 
   @TaskAction
   void findAndCheckBuildFiles() {
+    logger.info("Checking gradle build files for dependencies in pre-release versions...")
 
-    println "Checking gradle build files for "
+    if (project.version.contains('-')) {
+      logger.info("Project version $project.name is in $project.version which is pre-release, skipping snapshot checks ✓")
+      return
+    }
 
     def visitGradleFile = {
-      print "checking $it... "
+      logger.info("checking $it... ")
       def script = new GradleBuildScript(it)
       if (script.compileDependencies) {
         def snapshots = findAllSnapshots(script.compileDependencies)
-        logger.debug("Found compile dependencies: $script.compileDependencies with snapshots: $snapshots")
+        logger.info("Found compile dependencies: $script.compileDependencies with snapshots: $snapshots")
         if (snapshots) {
-          println "✗"
-          throw new GradleException(
-              "Found SNAPSHOT in compile dependencies in build script $it on $snapshots")
+          logger.info("✗")
+          throw new GradleException("Found SNAPSHOT in compile dependencies in build script $it on $snapshots")
         }
       }
 
       if (script.buildScriptDependencies) {
         def snapshots = findAllSnapshots(script.buildScriptDependencies)
-        logger.debug("Found buildscript dependencies: $script.buildScriptDependencies with snapshots: $snapshots")
+        logger.info("Found buildscript dependencies: $script.buildScriptDependencies with snapshots: $snapshots")
         if (snapshots) {
-          println "✗"
-          throw new GradleException(
-              "Found SNAPSHOT in buildscript dependencies in build script $it on $snapshots")
+          logger.info("✗")
+          throw new GradleException("Found SNAPSHOT in buildscript dependencies in build script $it on $snapshots")
         }
       }
-      println "✓"
+      logger.info("✓")
     }
 
     def filter = { false }
@@ -76,7 +78,7 @@ public class CheckGradleFilesForSnapshotDependencies extends DefaultTask {
         def shouldExclude = exclude.any {
           file.absolutePath ==~ it
         }
-        if (shouldExclude) println "excluding file $file.absolutePath"
+        if (shouldExclude) logger.info("excluding file $file.absolutePath")
         shouldExclude
       }
     }
@@ -86,7 +88,7 @@ public class CheckGradleFilesForSnapshotDependencies extends DefaultTask {
         nameFilter: isGradleFile,
         excludeFilter: filter
 
-    println "No SNAPSHOTS found ✓"
+    logger.info("No SNAPSHOTS found ✓")
   }
 
 }
