@@ -28,7 +28,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
     memberLevel = JavadocMemberLevel.PROTECTED
 
     if (project.documentation.javadocOverview) {
-        overview = project.documentation.javadocOverview
+      overview = project.documentation.javadocOverview
     }
 
     addStringOption "hdf project.name", "$project.name - $project.version"
@@ -55,6 +55,11 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
 
     // Generated classes
     classpath += files(Paths.get("$buildDir", "intermediates", "classes", "release"))
+    
+    if(project.documentation.classpath) {
+      project.documentation.classpath.each {
+        classpath += files(it)
+      }
+    }
   }
 }
-

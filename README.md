@@ -52,6 +52,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 ### 1.2.0 (In Progress)
+* Documentation/doclava: add customization of javadoc classpath
+* Documentation/doclava: simplified javadoc classpath setup
+* buildSrc/SnapshotCheck: only apply to projcets in release version (according to semver)
 * Quality/Pmd: Exclude `AvoidFieldNameMatchingMethodName`, `JUnitTestContainsTooManyAsserts`, `CommentDefaultAccessModifier`, `MethodArgumentCouldBeFinal` rules
 * Quality/Checkstyle: Add support for `@SuppressWarnings("checkstyle:RuleName)` suppression of checkstyle rules
 * Quality/Findbugs: Setup complete classpath for findbugs task, relying on `android.libraryVariants`. Note that this does not work on android applications, but can be adapted to that usecase if it becomes necessary 
