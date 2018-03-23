@@ -51,8 +51,9 @@ To ensure usability we follow these rules:
 * Major version changes must also provide a migration guide from the previous major version
 
 ## Versions <a name="versions"></a>
-### 1.2.0 (In Progress)
-* Documentation/doclava: add customization of javadoc classpath
+### 1.2.0 (2018-03-23)
+* Documentation/doclava: add customization of javadoc `source`
+* Documentation/doclava: add customization of javadoc `classpath`
 * Documentation/doclava: simplified javadoc classpath setup
 * buildSrc/SnapshotCheck: only apply to projcets in release version (according to semver)
 * Quality/Pmd: Exclude `AvoidFieldNameMatchingMethodName`, `JUnitTestContainsTooManyAsserts`, `CommentDefaultAccessModifier`, `MethodArgumentCouldBeFinal` rules
