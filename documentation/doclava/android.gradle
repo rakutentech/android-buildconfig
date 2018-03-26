@@ -11,7 +11,7 @@ import java.nio.file.Paths
 if(!project.hasProperty('documentation')) project.ext.documentation = [:]
 
 task copyImages(type: Copy) {
-  from Paths.get("$rootDir", "images")
+  from Paths.get("$projectDir", "images")
   into Paths.get("$buildDir", "javadocs", "reference", "images")
 }
 
@@ -20,7 +20,6 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
 
   failOnError = true
   title = null
-  source = android.sourceSets.main.java.srcDirs
 
   options {
     docletpath = configurations.doclava.files as List
@@ -28,7 +27,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
     memberLevel = JavadocMemberLevel.PROTECTED
 
     if (project.documentation.javadocOverview) {
-        overview = project.documentation.javadocOverview
+      overview = project.documentation.javadocOverview
     }
 
     addStringOption "hdf project.name", "$project.name - $project.version"
@@ -45,6 +44,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
   }
 
   project.afterEvaluate {
+    source = project.documentation.source ? project.documentation.source() : android.sourceSets.main.java.srcDirs
     destinationDir = new File(buildDir, 'javadocs')
 
     // Android
@@ -55,6 +55,11 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
 
     // Generated classes
     classpath += files(Paths.get("$buildDir", "intermediates", "classes", "release"))
+
+    if(project.documentation.classpath) {
+      project.documentation.classpath.each {
+        classpath += files(it)
+      }
+    }
   }
 }
-

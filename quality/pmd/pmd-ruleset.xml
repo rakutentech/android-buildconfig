@@ -124,6 +124,7 @@
         <exclude name="JUnitSpelling"/>
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <exclude name="JUnitTestsShouldIncludeAssert"/>
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
     </rule>
 
     <!-- Jakarta Commons Logging (https://pmd.github.io/latest/pmd-java/rules/java/logging-jakarta-commons.html) -->
