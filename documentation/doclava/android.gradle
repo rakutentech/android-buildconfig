@@ -11,7 +11,7 @@ import java.nio.file.Paths
 if(!project.hasProperty('documentation')) project.ext.documentation = [:]
 
 task copyImages(type: Copy) {
-  from Paths.get("$rootDir", "images")
+  from Paths.get("$projectDir", "images")
   into Paths.get("$buildDir", "javadocs", "reference", "images")
 }
 

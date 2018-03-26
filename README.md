@@ -50,7 +50,13 @@ To ensure usability we follow these rules:
 * Every version must describe the changes in [versions section](#versions)
 * Major version changes must also provide a migration guide from the previous major version
 
+## Migration 1.x.x -> 2.0.0
+If you use `docummentation/doclava` with image assets: move `$rootProject/images` to the project that includes the `documentation/doclava/android.gradle` script.
+
 ## Versions <a name="versions"></a>
+### 2.0.0 (2018-03-26)
+* Documentation/doclava: make image assets project local, i.e. not shared among subprojects.
+
 ### 1.2.0 (2018-03-23)
 * Documentation/doclava: add customization of javadoc `source`
 * Documentation/doclava: add customization of javadoc `classpath`
