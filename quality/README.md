@@ -69,6 +69,7 @@ jacocoAndroidUnitTestReport {
 ```
 
 ## Errorprone (with NullAway)
+```groovy
 // root script
 buildscript {
   apply from: "config/index.gradle"
