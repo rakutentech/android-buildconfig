@@ -54,6 +54,9 @@ To ensure usability we follow these rules:
 If you use `docummentation/doclava` with image assets: move `$rootProject/images` to the project that includes the `documentation/doclava/android.gradle` script.
 
 ## Versions <a name="versions"></a>
+### 2.1.0 (2018-04-13)
+* Quality/jacoco: get rid of dependency of old unmaintained gradle plugin.
+
 ### 2.0.0 (2018-03-26)
 * Documentation/doclava: make image assets project local, i.e. not shared among subprojects.
 
