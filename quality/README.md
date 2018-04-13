@@ -50,21 +50,11 @@ findbugs {
 
 ## Jacaco
 ```groovy
-// root script
-buildscript {
-  apply from: "config/index.gradle"
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
-  }
-}
-// sub project
+// in android project
 apply from: '../config/quality/jacoco/android.gradle'
-// optional: extra configuration options, see https://github.com/arturdm/jacoco-android-gradle-plugin
-jacocoAndroidUnitTestReport {
-    xml.enabled false
+// opional, see https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.plugins.JacocoPluginExtension.html
+jacoco {
+  toolVersion = 'x.y.z'
 }
 ```
 
