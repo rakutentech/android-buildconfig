@@ -5,5 +5,5 @@ apply from: "$CONFIG.configDir/quality/pmd/android.gradle"
 apply from: "$CONFIG.configDir/quality/errorprone/android.gradle"
 
 if(project.plugins.hasPlugin("kotlin-android")) {
-    apply from: "$CONFIG.configDir/quality/ktlint/android.gradle"
+    apply from: "$CONFIG.configDir/quality/detekt/android.gradle"
 }

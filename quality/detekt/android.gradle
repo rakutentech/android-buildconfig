@@ -1,0 +1,27 @@
+// see https://github.com/arturbosch/detekt#using-detekt-in-custom-gradle-projects
+repositories {
+    jcenter()
+}
+
+configurations {
+    detekt
+}
+
+task detekt(
+        type: JavaExec,
+        group: 'verification',
+        description: 'checkstyle for main kotlin sourcesets of android projects\'') {
+    main = "io.gitlab.arturbosch.detekt.cli.Main"
+    classpath = configurations.detekt
+    def inputPath = "$projectDir"
+    def configPath = files(rootProject.file('config/quality/detekt/detekt-config.yml')).asPath
+    def outputPath = "${buildDir}/reports/detekt"
+    def params = [ '-i', inputPath, '-c', configPath, '-o', outputPath]
+    args(params)
+}
+
+check.dependsOn detekt
+
+dependencies {
+    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.0.0.RC6-4'
+}

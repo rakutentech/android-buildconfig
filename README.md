@@ -32,6 +32,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
   - Findbugs
   - Jacoco
   - PMD
+  - Detekt
 * [BuildSrc](buildSrc/README.md)
 * [Documentation](documentation/README.md)
 
@@ -58,6 +59,9 @@ If you use `docummentation/doclava` with image assets: move `$rootProject/images
 * Update versions:
   * AGP 3.1.0 (requires Gradle 4.4+).
   * Targets (and builds with) SDK 27.
+
+### 3.0.0 (2018-04-13)
+* Remove Kotlin check style tool, `Ktlint`, to replace it by `Detekt`.
 
 ### 2.1.0 (2018-04-13)
 * Quality/jacoco: get rid of dependency of old unmaintained gradle plugin.
