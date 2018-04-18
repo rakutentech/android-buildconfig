@@ -83,7 +83,7 @@ tasks.withType(JavaCompile) {
 
 
 ## Detekt
-Kotlin check style tool.
+Static code analysis for Kotlin.
 
 ```groovy
 // android plugin
