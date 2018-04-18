@@ -1,5 +1,8 @@
 # Quality Tools
-These are default configurations for [checkstyle](https://github.com/checkstyle/checkstyle), [pmd](https://github.com/pmd/pmd), [findbugs](https://github.com/findbugsproject/findbugs) and [jacoco](https://github.com/jacoco/jacoco), they do the following:
+These are default configurations for [checkstyle](https://github.com/checkstyle/checkstyle), [pmd](https://github.com/pmd/pmd),
+[findbugs](https://github.com/findbugsproject/findbugs), [jacoco](https://github.com/jacoco/jacoco) and
+[detekt](https://github.com/arturbosch/detekt), they do the following:
+
 * configure a project to use the tool by including a single script
 * register a task that will run as part of the `check` task
 ```groovy
@@ -77,3 +80,13 @@ tasks.withType(JavaCompile) {
     options.compilerArgs += [ '-Xep:DeadException:WARN', '-Xep:GuardedByValidator:OFF' ]
 }
 ```
+
+
+## Detekt
+Static code analysis for Kotlin.
+
+```groovy
+// android plugin
+apply from: '../config/quality/detekt/android.gradle'
+```
+To test it, use the task : `./gradlew detekt`
