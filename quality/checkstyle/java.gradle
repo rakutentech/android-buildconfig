@@ -2,10 +2,29 @@ apply plugin: 'checkstyle'
 
 // see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
-  toolVersion '8.5' // see https://github.com/checkstyle/checkstyle/releases
-  configFile rootProject.file('config/quality/checkstyle/checkstyle.xml')
+  toolVersion '8.10' // see https://github.com/checkstyle/checkstyle/releases
+  configDir rootProject.file('config/quality/checkstyle')
   ignoreFailures false
   showViolations true
   maxErrors 0
   maxWarnings Integer.MAX_VALUE
 }
+
+// add a task to reformat code according to the Google Java style
+configurations {
+  reformat
+}
+
+dependencies {
+  reformat 'com.google.googlejavaformat:google-java-format:1.5'
+}
+
+task reformatJavaSources(
+    type: JavaExec,
+    description: 'Reformat all Java sources according to style guide') {
+
+  classpath = configurations.reformat
+  main = 'com.google.googlejavaformat.java.Main'
+  args = ['-i'] + fileTree(dir: 'src', include: '**/*.java')
+}
+
