@@ -45,7 +45,6 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
 
   project.afterEvaluate {
     source = project.documentation.source ? project.documentation.source() : android.sourceSets.main.java.srcDirs
-
     destinationDir = new File(buildDir, 'javadocs')
 
     // Android
@@ -56,7 +55,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
 
     // Generated classes
     classpath += files(Paths.get("$buildDir", "intermediates", "classes", "release"))
-    
+
     if(project.documentation.classpath) {
       project.documentation.classpath.each {
         classpath += files(it)
