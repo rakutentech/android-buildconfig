@@ -13,7 +13,7 @@ tasks.check.dependsOn tasks.jacoco
 
 project.afterEvaluate {
   def variants = android.hasProperty('libraryVariants') ? android.libraryVariants : android.applicationVariants
-  println variants 
+  println variants
   variants.forEach {
     tasks.jacoco.dependsOn(addJacocoTask(it))
   }
@@ -35,19 +35,27 @@ def addJacocoTask(variant) {
   }
 
   def excludedFiles = [
-    '**/R.class', 
-    '**/R$*.class', 
-    '**/BuildConfig.*', 
-    '**/Manifest*.*', 
-    '**/*Test*.*', 
+    '**/R.class',
+    '**/R$*.class',
+    '**/BuildConfig.*',
+    '**/Manifest*.*',
+    '**/*Test*.*',
     'android/**/*.*',
     '**/AutoValue_*.*',
     '**/AutoParcel_*.class',
     '**/*JavascriptBridge.class'
   ]
 
-  jacocoTask.sourceDirectories = files(variant.sourceSets.java.srcDirs.flatten())
-  jacocoTask.classDirectories = fileTree(dir: variant.javaCompile.destinationDir, excludes: excludedFiles)
+  def sourceDirectories = files(variant.sourceSets.java.srcDirs.flatten())
+  def classDirectories = fileTree(dir: variant.javaCompile.destinationDir, excludes: excludedFiles)
+
+  if(project.plugins.hasPlugin("kotlin-android")) {
+    sourceDirectories.from(files(variant.sourceSets.kotlin.srcDirs.flatten()))
+    classDirectories += fileTree(dir: "$buildDir/tmp/kotlin-classes/${variant.name}", excludes: excludedFiles)
+  }
+
+  jacocoTask.sourceDirectories = sourceDirectories
+  jacocoTask.classDirectories = classDirectories
   jacocoTask.executionData = files("${buildDir}/jacoco/test${variant.name}UnitTest.exec")
   jacocoTask
 }
