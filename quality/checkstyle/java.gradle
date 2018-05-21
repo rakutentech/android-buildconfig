@@ -25,6 +25,11 @@ task reformatJavaSources(
 
   classpath = configurations.reformat
   main = 'com.google.googlejavaformat.java.Main'
-  args = ['-i'] + fileTree(dir: 'src', include: '**/*.java')
+
+  def sources = fileTree(dir: 'src', include: '**/*.java')
+  args = ['-i'] + sources
+
+  inputs.files(sources)
+  outputs.files(sources)
 }
 
