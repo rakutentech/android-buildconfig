@@ -1,8 +1,8 @@
 apply plugin: 'net.ltgt.errorprone'
 
 dependencies {
-  annotationProcessor "com.uber.nullaway:nullaway:0.4.0"
-  testAnnotationProcessor "com.uber.nullaway:nullaway:0.4.0"
+  annotationProcessor "com.uber.nullaway:nullaway:0.4.6"
+  testAnnotationProcessor "com.uber.nullaway:nullaway:0.4.6"
 }
 
 tasks.withType(JavaCompile) {
