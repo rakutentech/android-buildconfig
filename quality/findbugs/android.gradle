@@ -14,7 +14,7 @@ check.dependsOn 'findbugs'
 task findbugs(type: FindBugs,
     group: 'verification',
     description: 'findbugs checks for main and test java sourcesets of android projects',
-    dependsOn: 'assembleRelease' ) {
+    dependsOn: 'compileReleaseSources' ) {
 
   project.afterEvaluate {
     def variants = android.hasProperty('libraryVariants') ? android.libraryVariants : android.applicationVariants
