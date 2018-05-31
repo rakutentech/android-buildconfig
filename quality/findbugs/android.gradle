@@ -2,6 +2,10 @@ apply plugin: 'findbugs'
 
 import java.nio.file.Paths
 
+configurations {
+  findbugsPlugins
+}
+
 findbugs {
   toolVersion = "3.0.1" // see https://github.com/findbugsproject/findbugs/releases
   effort = 'max' //  min, default, or max.
@@ -23,6 +27,7 @@ task findbugs(type: FindBugs,
   }
 
   classes = files(Paths.get("$buildDir", 'intermediates', 'classes', 'release'))
+  pluginClasspath = project.configurations.findbugsPlugins
   source 'src'
   include '**/*.java'
   exclude '**/gen/**'
@@ -35,6 +40,7 @@ task findbugs(type: FindBugs,
 
 dependencies {
   compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+  findbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'
 }
 
 android {
