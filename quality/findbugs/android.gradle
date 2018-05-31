@@ -27,6 +27,9 @@ task findbugs(type: FindBugs,
   include '**/*.java'
   exclude '**/gen/**'
 
+  effort = 'max'
+  reportLevel = 'low'
+
   reports {
     xml.enabled = false
     html.enabled = true
