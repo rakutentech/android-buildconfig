@@ -16,7 +16,7 @@ configurations {
 }
 
 dependencies {
-  reformat 'com.google.googlejavaformat:google-java-format:1.5'
+  reformat 'com.google.googlejavaformat:google-java-format:1.6'
 }
 
 task reformatJavaSources(
