@@ -36,7 +36,7 @@ task findbugs(type: FindBugs,
   reportLevel = 'low'
 
   reports {
-    xml.enabled = false
+    xml.enabled = true
     html.enabled = true
   }
 }
