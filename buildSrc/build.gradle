@@ -11,7 +11,7 @@ dependencies {
 }
 
 if (project.buildscript.sourceFile != buildscript.sourceFile) { // included in other buildscript
-  println "config/buildSrc/build.gradle included in other buildscript, adding groovy sources"
+  logger.debug("config/buildSrc/build.gradle included in other buildscript, adding groovy sources")
   sourceSets {
     main.groovy.srcDirs += ['../config/buildSrc/src/main/groovy']
 
