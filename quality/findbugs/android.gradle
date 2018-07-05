@@ -42,7 +42,7 @@ task findbugs(type: FindBugs,
 }
 
 dependencies {
-  compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+  implementation 'com.google.code.findbugs:annotations:3.0.1'
   findbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.4.4'
 }
 
