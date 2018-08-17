@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Git pre commit hook that reformats all staged and unstaged java files before commit.
+# Files that do not comply to the code format but were staged or unstagd warned but ignored..
+# The rationale is to enforce code style without creating "format all files" commits
+# accidentally because that cleanup should be separate in a separate commit.
+
+staged_files=$(git diff --name-only --cached)
+unstaged_files=$(git diff --name-only)
+
+# echo $unstaged_files | xargs git stash push -q
+./gradlew reformatJavaSources
+echo $staged_files | xargs git add # add all touched & reformatted files
+
+changed_files=$(git ls-files -m)
+# offenders = changed_files - unstaged_files
+union="$(echo "$changed_files" ; echo "$unstaged_files")"
+offenders="$(echo "$union" | sort | uniq -u)"
+if [[ $offenders ]]; then
+    echo "😬 The following files are not conforming to our style guide, commit them separately after running ./gradlew reformatJavaSources\n"
+    echo "$offenders"
+    echo ""
+fi
+
+echo $offenders | xargs git checkout # discard reformat of untouched files
+
+exit 0
