@@ -1,9 +1,13 @@
 apply plugin: 'checkstyle'
 
+import java.nio.file.Paths
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 // see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
   toolVersion '8.10' // see https://github.com/checkstyle/checkstyle/releases
-  configDir rootProject.file('config/quality/checkstyle')
+  configDir rootProject.file(Paths.get('config', 'quality', 'checkstyle'))
   ignoreFailures false
   showViolations true
   maxErrors 0
@@ -33,3 +37,20 @@ task reformatJavaSources(
   outputs.files(sources)
 }
 
+task installPrecommitHook {
+  doLast {
+    def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit'))
+    if(hookFile.exists()) {
+      Files.copy(
+          Paths.get(hookFile.absolutePath),
+          Paths.get(hookFile.parent, "${hookFile.name}.${new Date().format('yyyymmdd-HH:mm')}.backup")
+      )
+    }
+    Files.copy(
+        Paths.get(rootDir.absolutePath, 'config', 'quality', 'checkstyle', 'pre-commit'),
+        Paths.get(hookFile.absolutePath),
+        StandardCopyOption.REPLACE_EXISTING
+    )
+    hookFile.setExecutable(true)
+  }
+}
