@@ -66,13 +66,11 @@ jacoco {
 // root script
 buildscript {
   apply from: "config/index.gradle"
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.13'
-  }
 }
+plugins {
+  id 'net.ltgt.errorprone' version '0.6' apply false
+}
+
 // sub project
 apply from: '../config/quality/errorprone/android.gradle'
 // optional: extra configuration options, see https://github.com/tbroyer/gradle-errorprone-plugin and http://errorprone.info/docs/flags
@@ -80,7 +78,6 @@ tasks.withType(JavaCompile) {
     options.compilerArgs += [ '-Xep:DeadException:WARN', '-Xep:GuardedByValidator:OFF' ]
 }
 ```
-
 
 ## Detekt
 Static code analysis for Kotlin.
