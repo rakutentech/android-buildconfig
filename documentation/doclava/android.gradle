@@ -22,7 +22,9 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
   title = null
 
   options {
-    docletpath = configurations.doclava.files as List
+    project.afterEvaluate {
+      docletpath = configurations.doclava.files as List
+    }
     doclet "com.google.doclava.Doclava"
     memberLevel = JavadocMemberLevel.PROTECTED
 
