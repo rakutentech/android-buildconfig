@@ -21,7 +21,7 @@ task findbugs(type: FindBugs,
     classpath = files(android.bootClasspath) + release.javaCompile.classpath
   }
 
-  classes = files(Paths.get("$buildDir", 'intermediates', 'classes', 'release'))
+  classes = files(Paths.get("$buildDir", 'intermediates', 'javac', 'release'))
   source 'src'
   include '**/*.java'
   exclude '**/gen/**'
