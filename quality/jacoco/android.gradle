@@ -1,4 +1,4 @@
-apply plugin: 'jacoco-android'
+apply plugin: 'jacoco'
 
 android {
   testOptions.unitTests.all {
@@ -8,18 +8,46 @@ android {
   }
 }
 
-jacoco {
-  toolVersion "0.7.6.201602180812"
+task jacoco(group: 'verification', description: 'Grenerate Jacoco Report for all android variants')
+tasks.check.dependsOn tasks.jacoco
+
+project.afterEvaluate {
+  def variants = android.hasProperty('libraryVariants') ? android.libraryVariants : android.applicationVariants
+  println variants 
+  variants.forEach {
+    tasks.jacoco.dependsOn(addJacocoTask(it))
+  }
 }
 
-jacocoAndroidUnitTestReport {
-  excludes += ['**/AutoValue_*.*',
-               '**/AutoParcel_*.class',
-               '**/*JavascriptBridge.class']
+def addJacocoTask(variant) {
+  logger.info("adding jacoco task for variant $variant.name")
 
-  csv.enabled false
-  html.enabled true
-  xml.enabled true
+  // see https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
+  def jacocoTask = project.tasks.create("jacoco${variant.name.capitalize()}Report", JacocoReport)
+  jacocoTask.dependsOn("test${variant.name.capitalize()}UnitTest")
+  jacocoTask.group = 'verification'
+  jacocoTask.description = "Generate Jacoco Report for variant $variant.name"
+
+  jacocoTask.reports {
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
+  }
+
+  def excludedFiles = [
+    '**/R.class', 
+    '**/R$*.class', 
+    '**/BuildConfig.*', 
+    '**/Manifest*.*', 
+    '**/*Test*.*', 
+    'android/**/*.*',
+    '**/AutoValue_*.*',
+    '**/AutoParcel_*.class',
+    '**/*JavascriptBridge.class'
+  ]
+
+  jacocoTask.sourceDirectories = files(variant.sourceSets.java.srcDirs.flatten())
+  jacocoTask.classDirectories = fileTree(dir: variant.javaCompile.destinationDir, excludes: excludedFiles)
+  jacocoTask.executionData = files("${buildDir}/jacoco/test${variant.name}UnitTest.exec")
+  jacocoTask
 }
-
-check.dependsOn 'jacocoTestReport'

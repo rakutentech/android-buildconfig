@@ -32,6 +32,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
   - Findbugs
   - Jacoco
   - PMD
+  - Detekt
 * [BuildSrc](buildSrc/README.md)
 * [Documentation](documentation/README.md)
 
@@ -54,6 +55,17 @@ To ensure usability we follow these rules:
 If you use `docummentation/doclava` with image assets: move `$rootProject/images` to the project that includes the `documentation/doclava/android.gradle` script.
 
 ## Versions <a name="versions"></a>
+### HEAD
+* Update versions:
+  * AGP 3.1.0 (requires Gradle 4.4+).
+  * Targets (and builds with) SDK 27.
+
+### 3.0.0 (2018-04-13)
+* Remove Kotlin check style tool, `Ktlint`, to replace it by `Detekt`.
+
+### 2.1.0 (2018-04-13)
+* Quality/jacoco: get rid of dependency of old unmaintained gradle plugin.
+
 ### 2.0.0 (2018-03-26)
 * Documentation/doclava: make image assets project local, i.e. not shared among subprojects.
 
