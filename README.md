@@ -57,7 +57,7 @@ If you use `docummentation/doclava` with image assets: move `$rootProject/images
 ## Versions <a name="versions"></a>
 ### HEAD
 * Update versions:
-  * AGP 3.1.0 (requires Gradle 4.4+).
+  * AGP 3.3.1 (requires Gradle 4.10.1+).
   * Targets (and builds with) SDK 27.
 
 ### 3.0.0 (2018-04-13)

@@ -11,6 +11,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-  options.errorprone.errorproneArgs << '-XepDisableWarningsInGeneratedCode'
+  // Adding (-Xep:ParameterName:OFF) due to issue: https://github.com/google/error-prone/issues/780.
+  options.errorprone.errorproneArgs << '-XepDisableWarningsInGeneratedCode' << '-Xep:ParameterName:OFF'
   options.errorprone.errorproneArgs << '-Xep:NullAway:ERROR' << '-XepOpt:NullAway:AnnotatedPackages=com.uber'
 }
