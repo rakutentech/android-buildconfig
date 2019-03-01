@@ -56,7 +56,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
     classpath += android.libraryVariants.find { it.name == "release" }.javaCompile.classpath
 
     // Generated classes
-    classpath += files(Paths.get("$buildDir", "intermediates", "classes", "release"))
+    classpath += files(Paths.get("$buildDir", "intermediates", "javac", "release"))
 
     if(project.documentation.classpath) {
       project.documentation.classpath.each {
