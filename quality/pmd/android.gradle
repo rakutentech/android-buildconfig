@@ -7,7 +7,7 @@ pmd {
   rulePriority = 5 // 1 - 5, 5 is lowest
   ruleSetFiles = files(rootProject.file('config/quality/pmd/pmd-ruleset.xml'))
   targetJdk = TargetJdk.VERSION_1_7
-  toolVersion = '5.8.1' // see https://github.com/pmd/pmd/releases
+  toolVersion = '6.13.0' // see https://github.com/pmd/pmd/releases
 }
 
 check.dependsOn 'pmd'

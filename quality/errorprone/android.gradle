@@ -5,9 +5,9 @@ dependencies {
     // see https://github.com/tbroyer/gradle-errorprone-plugin#jdk-8-support
     errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
   }
-  errorprone 'com.google.errorprone:error_prone_core:2.3.2'
-  annotationProcessor 'com.uber.nullaway:nullaway:0.6.5'
-  testAnnotationProcessor 'com.uber.nullaway:nullaway:0.6.5'
+  errorprone 'com.google.errorprone:error_prone_core:2.3.3'
+  annotationProcessor 'com.uber.nullaway:nullaway:0.7.1'
+  testAnnotationProcessor 'com.uber.nullaway:nullaway:0.7.1'
 }
 
 tasks.withType(JavaCompile) {

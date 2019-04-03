@@ -6,7 +6,7 @@ import java.nio.file.StandardCopyOption
 
 // see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
-  toolVersion '8.10' // see https://github.com/checkstyle/checkstyle/releases
+  toolVersion '8.19' // see https://github.com/checkstyle/checkstyle/releases
   configDir rootProject.file(Paths.get('config', 'quality', 'checkstyle'))
   ignoreFailures false
   showViolations true
