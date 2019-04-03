@@ -10,7 +10,7 @@ pmd {
   toolVersion = '5.8.1' // see https://github.com/pmd/pmd/releases
 }
 
-check.dependsOn 'pmd'
+assemble.dependsOn 'pmd'
 task pmd(type: Pmd,
     group: 'verification',
     description: 'pmd checks for main and test java sourcesets of android projects') {
