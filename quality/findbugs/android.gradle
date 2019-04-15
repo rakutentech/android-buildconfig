@@ -23,7 +23,7 @@ task findbugs(type: FindBugs,
   project.afterEvaluate {
     def variants = android.hasProperty('libraryVariants') ? android.libraryVariants : android.applicationVariants
     def release = variants.find { it.name == 'release' }
-    classpath = files(android.bootClasspath) + release.javaCompile.classpath
+    classpath = files(android.bootClasspath) + release.javaCompileProvider.get().classpath
   }
 
   classes = files(Paths.get("$buildDir", 'intermediates', 'javac', 'release'))
