@@ -19,7 +19,7 @@ project.afterEvaluate {
 }
 
 def addJacocoTask(variant) {
-  def variantName = $variant.name.capitalize()
+  def variantName = variant.name.capitalize()
   logger.info("adding jacoco task for variant $variantName")
 
   // see https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
