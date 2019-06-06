@@ -83,7 +83,20 @@ tasks.withType(JavaCompile) {
 Static code analysis for Kotlin.
 
 ```groovy
-// android plugin
-apply from: '../config/quality/detekt/android.gradle'
+// root script
+buildscript {
+  apply from: "config/index.gradle"
+}
+plugins {
+  id 'io.gitlab.arturbosch.detekt' version '1.0.0-RC14'
+}
+
+// sub project
+apply from: "../config/quality/detekt/android.gradle"
+dependencies {
+  // Add to enable the KtLint rules
+  detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.0.0-RC14"
+}
 ```
-To test it, use the task : `./gradlew detekt`
+
+To test it, use the task : `./gradlew detekt`. See [the detekt docs](https://arturbosch.github.io/detekt/groovydsl.html) for additional configuration options.
