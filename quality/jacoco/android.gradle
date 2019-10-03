@@ -43,7 +43,9 @@ def addJacocoTask(variant) {
     'android/**/*.*',
     '**/AutoValue_*.*',
     '**/AutoParcel_*.class',
-    '**/*JavascriptBridge.class'
+    '**/*JavascriptBridge.class',
+    '**/*InitProvider.class',
+    '**/*ManifestConfig.class'
   ]
 
   def sourceDirectories = files(variant.sourceSets.java.srcDirs.flatten())
