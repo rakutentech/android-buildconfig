@@ -18,9 +18,9 @@ ext.CONFIG.versions = [
         ],
         plugin: '3.3.1',
         sdk      : [
-            compile: 28,
-            target : 28,
-            min    : 15,
+            compile: 29,
+            target : 29,
+            min    : 21,
         ],
     ],
 
