@@ -1,58 +1,19 @@
-autoCorrect: true
 failFast: false
 
-test-pattern: # Configure exclusions for test sources
-  active: true
-  patterns: # Test file regexes
-    - '.*/test/.*'
-    - '.*Test.kt'
-    - '.*Spec.kt'
-  exclude-rule-sets:
-    - 'comments'
-    - 'naming'
-  exclude-rules:
-    - 'NamingRules'
-    - 'WildcardImport'
-    - 'NoWildcardImports'
-    - 'MagicNumber'
-    - 'MaxLineLength'
-    - 'LateinitUsage'
-    - 'StringLiteralDuplication'
-    - 'ForEachOnRange'
-    - 'SpreadOperator'
-    - 'TooManyFunctions'
-    - 'InstanceOfCheckForException'
-    - 'TooGenericExceptionCaught'
-    - 'ClassNaming'
+test_pattern: &test_pattern "**/test/**, **/*Test.kt, **/*Spec.kt"
 
 build:
   maxIssues: 5
-  weights:
-    # complexity: 2
-    # LongParameterList: 1
-    # style: 1
-    # comments: 1
 
 processors:
   active: true
-  exclude:
-  # - 'FunctionCountProcessor'
-  # - 'PropertyCountProcessor'
-  # - 'ClassCountProcessor'
-  # - 'PackageCountProcessor'
-  # - 'KtFileCountProcessor'
 
 console-reports:
   active: true
-  exclude:
-  #  - 'ProjectStatisticsReport'
-  #  - 'ComplexityReport'
-  #  - 'NotificationReport'
-  #  - 'FindingsReport'
-  #  - 'BuildFailureReport'
 
 comments:
   active: true
+  excludes: *test_pattern
   CommentOverPrivateFunction:
     active: false
   CommentOverPrivateProperty:
@@ -93,6 +54,7 @@ complexity:
     threshold: 20
   LongParameterList:
     active: true
+    excludes: *test_pattern
     threshold: 6
     ignoreDefaultParameters: false
   MethodOverloading:
@@ -103,12 +65,14 @@ complexity:
     threshold: 4
   StringLiteralDuplication:
     active: true
+    excludes: *test_pattern
     threshold: 3
     ignoreAnnotation: true
     excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
   TooManyFunctions:
     active: true
+    excludes: *test_pattern
     thresholdInFiles: 11
     thresholdInClasses: 11
     thresholdInInterfaces: 11
@@ -158,6 +122,7 @@ exceptions:
     methodNames: 'toString,hashCode,equals,finalize'
   InstanceOfCheckForException:
     active: true
+    excludes: *test_pattern
   NotImplementedDeclaration:
     active: true
   PrintStackTrace:
@@ -180,6 +145,7 @@ exceptions:
     active: true
   TooGenericExceptionCaught:
     active: true
+    excludes: *test_pattern
     exceptionNames:
      - ArrayIndexOutOfBoundsException
      - Error
@@ -261,6 +227,7 @@ formatting:
   NoWildcardImports:
     active: true
     autoCorrect: true
+    excludes: *test_pattern
   PackageName:
     active: true
     autoCorrect: true
@@ -295,6 +262,7 @@ formatting:
 
 naming:
   active: true
+  excludes: *test_pattern
   ClassNaming:
     active: true
     classPattern: '[A-Z$][a-zA-Z0-9$]*'
@@ -365,8 +333,10 @@ performance:
     active: false
   ForEachOnRange:
     active: true
+    excludes: *test_pattern
   SpreadOperator:
     active: true
+    excludes: *test_pattern
   UnnecessaryTemporaryInstantiation:
     active: true
 
@@ -441,6 +411,7 @@ style:
     maxJumpCount: 1
   MagicNumber:
     active: true
+    excludes: *test_pattern
     ignoreNumbers: '-1,0,1,2'
     ignoreHashCodeFunction: false
     ignorePropertyDeclaration: false
@@ -454,6 +425,7 @@ style:
     active: false
   MaxLineLength:
     active: true
+    excludes: *test_pattern
     maxLineLength: 120
     excludePackageStatements: true
     excludeImportStatements: true
@@ -535,4 +507,5 @@ style:
     active: false
   WildcardImport:
     active: true
+    excludes: *test_pattern
     excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
