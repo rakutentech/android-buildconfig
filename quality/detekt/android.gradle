@@ -7,6 +7,7 @@ detekt {
         xml { destination = file("${buildDir}/reports/detekt/detekt.xml") }
         html { destination = file("${buildDir}/reports/detekt/detekt.html") }
     }
+    autoCorrect = true
 }
 
 check.dependsOn 'detekt'
