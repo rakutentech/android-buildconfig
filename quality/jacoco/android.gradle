@@ -59,8 +59,8 @@ def addJacocoTask(variant) {
     }
   }
 
-  jacocoTask.sourceDirectories = sourceDirectories
-  jacocoTask.classDirectories = classDirectories
-  jacocoTask.executionData = files("${buildDir}/jacoco/test${variantName}UnitTest.exec")
+  jacocoTask.sourceDirectories.from = sourceDirectories
+  jacocoTask.classDirectories.from = classDirectories
+  jacocoTask.executionData.from = files("${buildDir}/jacoco/test${variantName}UnitTest.exec")
   jacocoTask
 }
