@@ -1,0 +1,28 @@
+def repo = System.getenv('ARTIFACTORY_REPO')
+def user = System.getenv('ARTIFACTORY_USER')
+def password = System.getenv('ARTIFACTORY_PASSWORD')
+def url = System.getenv('ARTIFACTORY_URL')
+
+publishing {
+  repositories {
+    maven {
+      it.name repo
+      credentials {
+        it.username user
+        it.password password
+      }
+      it.url url
+    }
+  }
+}
+
+task ensureArtifactoryCredentials {
+  doFirst {
+    if (!repo?.trim() || !user?.trim() || !password?.trim() || !url?.trim()) {
+      throw new GradleException("You must define environment variables for " +
+              "ARTIFACTORY_USER, ARTIFACTORY_PASSWORD, ARTIFACTORY_URL, and ARTIFACTORY_REPO.")
+    }
+  }
+}
+
+publish.dependsOn ensureArtifactoryCredentials
