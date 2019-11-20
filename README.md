@@ -35,6 +35,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
   - Detekt
 * [BuildSrc](buildSrc/README.md)
 * [Documentation](documentation/README.md)
+* [Publish](publish/README.md)
 
 ## Versioning Contract
 This configuration's versions follow [semantic versioning](https://semver.org/). We align all libraries that we bundle together on the same major version of this configuration. To clarify the semantics in the context of shared configurations here are a few examples of what are breaking changes (major version change), backwards compatible improvements (minor version change) and bug fixes (patch level):

@@ -1,0 +1,35 @@
+apply plugin: 'com.jfrog.bintray'
+
+def user = System.getenv('BINTRAY_USER')
+def key = System.getenv('BINTRAY_KEY')
+def repo = System.getenv('BINTRAY_REPO')
+
+bintray {
+  it.user = user
+  it.key = key
+  publications = publishing.publications.collect{ it.name }
+  pkg {
+    it.repo = repo
+    name = 'android-remote-config'
+    licenses = ['MIT']
+    vcsUrl = project.scmUrl
+    version {
+      name = project.version
+      desc = project.description
+      released  = new Date()
+      vcsTag = "v$project.version"
+    }
+  }
+}
+
+task ensureBintrayCredentials {
+  doFirst {
+    if (!user?.trim() || !key?.trim() || !repo?.trim()) {
+      throw new GradleException("You must define environment variables for " +
+              "BINTRAY_USER, BINTRAY_KEY, and BINTRAY_REPO.")
+    }
+  }
+}
+
+bintrayUpload.dependsOn ensureBintrayCredentials
+publish.dependsOn bintrayUpload
