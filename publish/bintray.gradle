@@ -3,6 +3,7 @@ apply plugin: 'com.jfrog.bintray'
 def user = System.getenv('BINTRAY_USER')
 def key = System.getenv('BINTRAY_KEY')
 def repo = System.getenv('BINTRAY_REPO')
+def pkgName = System.getenv('BINTRAY_PACKAGE_NAME')
 
 bintray {
   it.user = user
@@ -10,7 +11,7 @@ bintray {
   publications = publishing.publications.collect{ it.name }
   pkg {
     it.repo = repo
-    name = 'android-remote-config'
+    name = pkgName
     licenses = ['MIT']
     vcsUrl = project.scmUrl
     version {
