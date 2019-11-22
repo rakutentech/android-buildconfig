@@ -12,7 +12,8 @@ The following environment variables need to be set.
 # If publishing to Bintray
 BINTRAY_USER=username
 BINTRAY_KEY=password
-BINTRAY_REPO=your_repo_name
+BINTRAY_REPO=your_bintray_repo_name
+BINTRAY_PACKAGE_NAME=your_bintray_package_name
 
 # If publishing to Artifactory (this example uses the Jfrog OSS Snapshot repo)
 ARTIFACTORY_USER=username
