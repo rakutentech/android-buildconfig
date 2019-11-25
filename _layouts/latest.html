@@ -1,0 +1,7 @@
+<html>
+    <head>
+        {% assign latestVersion = site.versions | last %}
+        <meta http-equiv="refresh" content="0;url={{ site.docs_path | append: '/' | append: latestVersion.version }}" />
+    </head>
+    <body></body>
+</html>

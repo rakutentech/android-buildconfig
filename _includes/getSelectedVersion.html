@@ -1,0 +1,7 @@
+<script>
+    function getSelectedVersion() {
+        var docsPath = '{{ site.docs_path | relative_url }}'.replace(/\/$/, '');
+        return '{{ page.path | relative_url }}'
+            .match(new RegExp(docsPath + '\/([0-9]*?\.[0-9]*?)\/'))[1];
+    }
+</script>

@@ -1,0 +1,9 @@
+title: Set your title
+description: Set your description
+repository: Set your repository
+
+docs_path: docs
+api_docs_path: api
+
+collections:
+  versions:

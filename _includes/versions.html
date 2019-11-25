@@ -1,0 +1,38 @@
+<div id="VersionList" class="version-list">
+    <p class="selected">v<span id="CurrentVersion"></span> 
+        <svg id="Expand" class="button expand" width="19" height="11" viewBox="0 0 19 11" xmlns="http://www.w3.org/2000/svg">
+            <path transform="rotate(-180 9.374 5.494)" d="M17.9991 10.422825L9.3741 0.565575 0.7491 10.422825" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <svg id="Collapse" class="button collapse" width="19" height="11" viewBox="0 0 19 11" xmlns="http://www.w3.org/2000/svg">
+            <path transform="rotate(0 9.374 5.494)" d="M17.9991 10.422825L9.3741 0.565575 0.7491 10.422825" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+    </p>
+    <ul>
+        {% for version in site.versions reversed %}
+        <li><a href="{{ site.docs_path | append: '/' | append: version.version | relative_url }}">v{{ version.version }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% include getSelectedVersion.html %}
+
+<script>
+    (function() {
+        var currentVersion = document.getElementById("CurrentVersion");
+        var expandButton = document.getElementById("Expand");
+        var collapseButton = document.getElementById("Collapse");
+        var versionList = document.getElementById("VersionList");
+
+        currentVersion.innerHTML = getSelectedVersion();
+
+        var activeClass = 'active';
+
+        expandButton.addEventListener('click', function() {
+            versionList.classList.add(activeClass);
+        });
+
+        collapseButton.addEventListener('click', function() {
+            versionList.classList.remove(activeClass);
+        });
+    })();
+</script>

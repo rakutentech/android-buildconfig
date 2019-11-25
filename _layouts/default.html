@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    {% include head.html %}
+  </head>
+  <body>
+      <header class="page-header-small" role="banner">
+          <div class="page-header-inner">
+              <h2 class="project-name"><a id="TopLink" href="{{ site.docs_path | relative_url }}">{{ page.title | default: site.title | default: site.github.repository_name }}</a></h2>
+              {% include versions.html %}
+          </div>
+      </header>
+
+    <main id="content" class="main-content" role="main">
+      {{ content }}
+
+      {% include footer.html %}
+    </main>
+
+    {% include getSelectedVersion.html %}
+
+    <script>
+      (function() {
+        var topLink = document.getElementById('TopLink');
+
+        topLink.href = topLink.href + '/' + getSelectedVersion()
+      })();
+    </script>
+  </body>
+</html
