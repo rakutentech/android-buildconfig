@@ -7,6 +7,8 @@
         General Java quality rules.
     </description>
 
+    <exclude-pattern>.*\.kt</exclude-pattern>
+
     <!-- Android https://pmd.github.io/latest/pmd-java/rules/java/android.html -->
     <rule ref="rulesets/java/android.xml"/>
 
@@ -25,7 +27,7 @@
         <exclude name="CyclomaticComplexity"/>
         <exclude name="StdCyclomaticComplexity"/>
     </rule>
-    
+
     <rule ref="rulesets/java/codesize.xml/ExcessiveMethodLength" message="Avoid methods longer than 50 lines">
         <properties>
             <property name="minimum" value="50"/>
