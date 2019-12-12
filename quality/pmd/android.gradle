@@ -6,7 +6,7 @@ pmd {
   // currently only 5 works (see https://github.com/pmd/pmd/issues/394)  a fix is scheduled for pmd 6.0
   rulePriority = 5 // 1 - 5, 5 is lowest
   ruleSetFiles = files(rootProject.file('config/quality/pmd/pmd-ruleset.xml'))
-  this.rulesets = [] // see https://stackoverflow.com/a/34145485
+  ruleSets = [] // see https://stackoverflow.com/a/34145485
   targetJdk = TargetJdk.VERSION_1_7
   toolVersion = '5.8.1' // see https://github.com/pmd/pmd/releases
 }
