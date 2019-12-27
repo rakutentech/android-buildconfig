@@ -6,7 +6,7 @@ dependencies {
     errorproneJavac 'com.google.errorprone:javac:9+181-r4173-1'
   }
   errorprone 'com.google.errorprone:error_prone_core:2.3.2'
-  errorprone 'com.uber.nullaway:nullaway:0.6.5' # see https://github.com/uber/NullAway/issues/247#issuecomment-476015654
+  errorprone 'com.uber.nullaway:nullaway:0.6.5' // see https://github.com/uber/NullAway/issues/247#issuecomment-476015654
   annotationProcessor 'com.uber.nullaway:nullaway:0.6.5'
   testAnnotationProcessor 'com.uber.nullaway:nullaway:0.6.5'
 }
