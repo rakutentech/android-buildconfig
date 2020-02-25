@@ -1,15 +1,18 @@
 # Documentation Generation
 
-Configuration to create doclava javadoc.
+Configuration to create doclava javadoc or dokka kdoc.
 
-## Example 1: 
+## For Doclava
+### Documentation for Java projects
+
+Example 1:
 
 ```groovy
 apply from: '../config/documentation/doclava/android.gradle'
 // adds `generateDoclava` task to your project
 ```
 
-## Example 2: Customizations
+Example 2: Customizations
 
 ```groovy
 // needs to be defined BEFORE `apply` call to doclava script 😢
@@ -27,3 +30,26 @@ project.ext.documentation = [
 apply from: '../config/documentation/doclava/android.gradle'
 ```
 
+## Dokka
+
+### Documentation for Kotlin projects
+```groovy
+// root script
+buildscript {
+  ext.dokka_version = '0.10.0'
+
+  dependencies {
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
+  }
+}
+
+// sub project
+apply from: '../config/documentation/dokka/android.gradle'
+dokka {
+  configuration {
+    sourceRoot {
+      path = "{path to source}"
+    }
+  }
+}
+```
