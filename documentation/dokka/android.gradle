@@ -3,7 +3,7 @@ apply plugin: 'org.jetbrains.dokka'
 def docsBuildDirectory = "$buildDir/kdocs"
 
 dokka {
-  outputFormat = 'html'
+  outputFormat = 'markdown'
   outputDirectory = "$docsBuildDirectory"
   configuration {
     includeNonPublic = false
