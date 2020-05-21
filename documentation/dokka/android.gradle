@@ -28,6 +28,7 @@ task copyUserGuide(type: Copy) {
   into ("") {
     from "USERGUIDE.md"
   }
+  rename "USERGUIDE.md", "index.md"
   into ("images") {
     from "images"
   }
