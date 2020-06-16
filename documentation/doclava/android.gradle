@@ -10,13 +10,16 @@ import java.nio.file.Paths
 
 if(!project.hasProperty('documentation')) project.ext.documentation = [:]
 
-task copyImages(type: Copy) {
-  from Paths.get("$projectDir", "images")
-  into Paths.get("$buildDir", "javadocs", "reference", "images")
-}
-
 task generateDoclava(type: Javadoc, group: 'publishing') {
-  dependsOn copyImages, configurations.doclava, 'assembleRelease'
+  dependsOn configurations.doclava, 'assembleRelease'
+
+  // Copy Images
+  doLast {
+    copy {
+      from "$projectDir/images"
+      into "$buildDir/javadocs/reference/images"
+    }
+  }
 
   failOnError = true
   title = null
