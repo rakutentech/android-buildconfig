@@ -21,7 +21,7 @@ task generateDoclava(type: Javadoc, group: 'publishing') {
     }
   }
 
-  failOnError = true
+  failOnError = project.documentation.failOnError != null ? project.documentation.failOnError : true
   title = null
 
   options {

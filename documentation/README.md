@@ -25,7 +25,8 @@ project.ext.documentation = [
     source: { // closue that evaluates to a FileTree object, will be invoked after the project is evaluated, with no arguments
         fileTree(project(':subproject-a').android.sourceSets.main.java.srcDirs[0]) + 
         fileTree(project(':subproject-b').android.sourceSets.main.java.srcDirs[0])
-    }
+    },
+    failOnError: true
 ]
 apply from: '../config/documentation/doclava/android.gradle'
 ```
