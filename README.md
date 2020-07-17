@@ -2,7 +2,7 @@
 This repository contains common configuration to be used across our Android libraries. The advantage of sharing these configurations in mainly consistency of configuration among multiple libraries and reduction of boilerplate.
 
 ## Kickstart
-First add the subomudle to your project:
+First add the submodule to your project:
 
 ```sh
 $ cd my_project
@@ -52,14 +52,20 @@ To ensure usability we follow these rules:
 * Every version must describe the changes in [versions section](#versions)
 * Major version changes must also provide a migration guide from the previous major version
 
-## Migration 1.x.x -> 2.0.0
-If you use `docummentation/doclava` with image assets: move `$rootProject/images` to the project that includes the `documentation/doclava/android.gradle` script.
-
 ## Versions <a name="versions"></a>
 ### HEAD
 * Update versions:
-  * AGP 3.3.1 (requires Gradle 4.10.1+).
-  * Targets (and builds with) SDK 27.
+  * AGP 3.6.2 (requires Gradle 5.6.4+).
+  * Targets (and builds with) SDK 29.
+
+### 4.0.0 (2020-07-17)
+* **Breaking Change:** Remove `digital.wup.android-maven-publish` plugin as it is deprecated and AGP now has built-in support for the [maven-publish plugin](https://developer.android.com/studio/build/maven-publish-plugin). Due to this change, you now must configure your publications within a the `afterEvaluate` phase. See the [publishing readme](publish/README.md] for more details. You should also remove `digital.wup.android-maven-publish` from your dependencies.
+* Added support for [KDoc generation](documentation/README.md] using dokka.
+* Update target/compile SDK to 29 and update Min SDK to 21.
+* Update Android Gradle Plugin to 3.6.2. You must now update your Gradle version to 5.6.4+.
+* Add support for publishing to [Bintray or Artifactory](publish/README.md).
+* Fixed an issue with documentation generation where images sometimes weren't copied to the documentation folder.
+* Add `property` closure to `CONFIG`. This can be used to return a value that has been set as either an environment variable or gradle property. Use like this: `CONFIG.property('PROPERTY_NAME')`.
 
 ### 3.0.0 (2018-04-13)
 * Remove Kotlin check style tool, `Ktlint`, to replace it by `Detekt`.
