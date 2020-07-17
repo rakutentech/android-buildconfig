@@ -91,7 +91,8 @@ afterEvaluate {
           description:  'different description',
           licenseName:  'different license',
           licenseUrl:   'https://www.example.com',
-          scmUrl:       'https://www.example.com/repo.git'
+          scmUrl:       'https://www.example.com/repo.git',
+          excludeSourceJar: false // By default, a Jar containing the module's source in added to artifacts - set to true to exlcude the Jar
         ))
       }
     }

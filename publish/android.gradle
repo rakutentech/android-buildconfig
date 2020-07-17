@@ -34,7 +34,9 @@ ext.androidArtifact = { Map config ->
     groupId config.get('groupId') ?: project.group
     version config.get('version') ?: project.version
 
-    artifact sourceJar
+    if (!config.get('excludeSourceJar')) {
+      artifact sourceJar
+    }
     if (javaDocTask) {
       artifact javaDocJar
     }
