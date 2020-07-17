@@ -1,6 +1,6 @@
 import java.nio.file.Paths
 
-apply plugin: 'digital.wup.android-maven-publish'
+apply plugin: 'maven-publish'
 
 task sourceJar(type: Jar) {
   from android.sourceSets.main.java.srcDirs
@@ -29,8 +29,10 @@ ext.androidArtifact = { Map config ->
   return {
     config = config ?: [:]
 
-    from config.get('from') ?: components.android
+    from config.get('from') ?: components.release
     artifactId config.get('artifactId') ?: project.name
+    groupId config.get('groupId') ?: project.group
+    version config.get('version') ?: project.version
 
     artifact sourceJar
     if (javaDocTask) {
@@ -45,8 +47,6 @@ ext.androidArtifact = { Map config ->
 
     pom {
       name = config.get('name') ?: project.name
-      groupId config.get('groupId') ?: project.group
-      version config.get('version') ?: project.version
       description = config.get('description') ?: project.description
       url = config.get('url') ?: project.url
       licenses {
