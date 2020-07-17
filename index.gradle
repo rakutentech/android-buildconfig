@@ -1,6 +1,9 @@
 buildscript {
   ext.CONFIG = [
       configDir: getSourceFile().parent,
+      property: { key ->
+        return System.getenv(key) ?: (project.hasProperty(key) ? project."$key" : null)
+      }
   ]
 }
 
