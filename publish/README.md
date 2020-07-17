@@ -1,6 +1,6 @@
 # Publishing
 
-These configurations can be used for publishing AARs to [Bintray](https://bintray.com/) or an [Artifactory](https://jfrog.com/artifactory/) Repo.
+These configurations can be used for publishing AARs to [Bintray](https://bintray.com/) or an [Artifactory](https://jfrog.com/artifactory/) Repo. This uses the [maven-publish-plugin](https://developer.android.com/studio/build/maven-publish-plugin) which is built-in to AGP 3.6.0+.
 
 ## Setup
 
@@ -24,12 +24,12 @@ ARTIFACTORY_REPO=oss-snapshot-local
 
 ### 2. Add plugins to buildscript
 
-You will need to add the [Maven Publish Plugin](https://github.com/wupdigital/android-maven-publish) and [Bintray Plugin](https://github.com/bintray/gradle-bintray-plugin) to your classpath in your project `build.gradle`.
+You will need to add the [Bintray Plugin](https://github.com/bintray/gradle-bintray-plugin) to your classpath in your project's `build.gradle`. If you don't plan to publish to Bintray (and only to Artifactory) then you can skip this step.
 
 ```groovy
 bulidscript {
-  dependencies { // see https://github.com/wupdigital/android-maven-publish
-    classpath 'digital.wup:android-maven-publish:3.6.2'
+  dependencies {
+    // If publishing to Bintray
     classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
   }
 }
@@ -37,14 +37,21 @@ bulidscript {
 
 ### 3. Apply publishing scripts
 
-Next you can apply either `config/publish/bintray.gradle` or `config/publish/artifactory.gradle` in the `build.gradle` file for the module you wish to publish. If you are using Bintray's [OSS Jfrog Artifactory](https://oss.jfrog.org/) for snapshots, you can apply the Artifactory script in the case that you're publishing a snapshot version.
+Next, in the `build.gradle` file for the module you wish to publish, you can apply the `config/publish/android.gradle` script and configure your publications.
+
+Note that you publications must be configured inside the `afterEvaluate` phase. This is because the Android components which will be published aren't create until this phase.
+
+You can also apply either the `config/publish/bintray.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published. If you are using Bintray's [OSS Jfrog Artifactory](https://oss.jfrog.org/) for snapshots, you can apply the Artifactory script in the case that you're publishing a snapshot version.
 
 ```
 apply from: '../config/publish/android.gradle'
-publishing {
-  publications {
-    myAndroidLibraryName(MavenPublication, androidArtifact())
-  }
+// Must be configured inside afterEvaluate phase because Android components are only available here
+afterEvaluate {
+    publishing {
+      publications {
+        myAndroidLibraryName(MavenPublication, androidArtifact())
+      }
+    }
 }
 
 def isSnapshot = project.version.contains('-')
@@ -60,28 +67,33 @@ This will do:
 * create maven publication for with the name `myAndroidLibraryName`
   + uses `project.name`, `project.group`, `project.version`, `project.description`, `project.url`, `project.licenseName`, `project.licenseUrl`, and `project.scmUrl`
   + The values are set in `gradle.properties`, but can be optionally configured by passing a Map, as shown below.
+  + Configures publication for `component.release` as `from` field - your project's `AAR`
+  + Add artifacts for the JavaDocs (for Java projects) or KDocs (for Kotlin projects) and a JAR containing your project's source code to your publications.
+  + Configure the repos where your artifacts will be published - Artifactory and/or Bintray. This uses the credentials you've set as environment variables.
 
 ## Configuration
 
 You can overwrite the default values of a publication by passing in a map, e.g.
 
 ```groovy
-apply from: '../config-internal/publish/android.gradle'
-publishing {
-  publications {
-    myJavaLibraryName(MavenPublication, androidArtifact(
-      from:         compontents.groovy, // different components source
-      artifacts:    [someJarTask], // Additional artifacts
-      groupId:      'different-group',
-      artifactId:   'different-artifact-id',
-      name:         'different-name',
-      version:      'different-version',
-      url:          'different url',
-      description:  'different description',
-      licenseName:  'different license',
-      licenseUrl:   'https://www.example.com',
-      scmUrl:       'https://www.example.com/repo.git'
-    ))
-  }
+apply from: '../config/publish/android.gradle'
+afterEvaluate {
+    publishing {
+      publications {
+        myJavaLibraryName(MavenPublication, androidArtifact(
+          from:         compontents.groovy, // different components source
+          artifacts:    [someJarTask], // Additional artifacts
+          groupId:      'different-group',
+          artifactId:   'different-artifact-id',
+          name:         'different-name',
+          version:      'different-version',
+          url:          'different url',
+          description:  'different description',
+          licenseName:  'different license',
+          licenseUrl:   'https://www.example.com',
+          scmUrl:       'https://www.example.com/repo.git'
+        ))
+      }
+    }
 }
 ```
