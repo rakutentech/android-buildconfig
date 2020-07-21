@@ -43,7 +43,7 @@ Note that you publications must be configured inside the `afterEvaluate` phase. 
 
 You can also apply either the `config/publish/bintray.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published. If you are using Bintray's [OSS Jfrog Artifactory](https://oss.jfrog.org/) for snapshots, you can apply the Artifactory script in the case that you're publishing a snapshot version.
 
-```
+```groovy
 apply from: '../config/publish/android.gradle'
 // Must be configured inside afterEvaluate phase because Android components are only available here
 afterEvaluate {
@@ -70,6 +70,22 @@ This will do:
   + Configures publication for `component.release` as `from` field - your project's `AAR`
   + Add artifacts for the JavaDocs (for Java projects) or KDocs (for Kotlin projects) and a JAR containing your project's source code to your publications.
   + Configure the repos where your artifacts will be published - Artifactory and/or Bintray. This uses the credentials you've set as environment variables.
+
+## Custom Features
+
+### 1. Different repository for snapshot version
+
+You can set different Artifactory URLs for snapshot and release version by setting the `ARTIFACTORY_URL` Gradle Property.
+
+```groovy
+def isSnapshot = project.version.contains('-')
+if (isSnapshot) {
+  project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-snapshot-local"
+} else {
+  project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-release-local"
+}
+apply from: '../config/publish/artifactory.gradle'
+```
 
 ## Configuration
 
