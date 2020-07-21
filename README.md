@@ -58,6 +58,9 @@ To ensure usability we follow these rules:
   * AGP 3.6.2 (requires Gradle 5.6.4+).
   * Targets (and builds with) SDK 29.
 
+### 4.1.0 (2020-07-21)
+* Added support for using Gradle Property for `ARTIFACTORY_URL` to handle different URL for snapshot and release repo.
+
 ### 4.0.0 (2020-07-17)
 * **Breaking Change:** Remove `digital.wup.android-maven-publish` plugin as it is deprecated and AGP now has built-in support for the [maven-publish plugin](https://developer.android.com/studio/build/maven-publish-plugin). Due to this change, you now must configure your publications within a the `afterEvaluate` phase. See the [publishing readme](publish/README.md] for more details. You should also remove `digital.wup.android-maven-publish` from your dependencies.
 * Added support for [KDoc generation](documentation/README.md] using dokka.
