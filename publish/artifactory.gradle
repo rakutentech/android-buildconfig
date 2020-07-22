@@ -1,6 +1,6 @@
-def repo = System.getenv('ARTIFACTORY_REPO')
-def user = System.getenv('ARTIFACTORY_USER')
-def password = System.getenv('ARTIFACTORY_PASSWORD')
+def repo = project.ext.hasProperty('ARTIFACTORY_REPO') ? project.ext.ARTIFACTORY_REPO : System.getenv('ARTIFACTORY_REPO')
+def user = project.ext.hasProperty('ARTIFACTORY_USER') ? project.ext.ARTIFACTORY_USER : System.getenv('ARTIFACTORY_USER')
+def password = project.ext.hasProperty('ARTIFACTORY_PASSWORD') ? project.ext.ARTIFACTORY_PASSWORD : System.getenv('ARTIFACTORY_PASSWORD')
 def url = project.ext.hasProperty('ARTIFACTORY_URL') ? project.ext.ARTIFACTORY_URL : System.getenv('ARTIFACTORY_URL')
 
 publishing {
