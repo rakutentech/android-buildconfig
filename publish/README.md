@@ -73,18 +73,52 @@ This will do:
 
 ## Custom Features
 
-### 1. Different repository for snapshot version
+### 1. Different repository details for snapshot version
 
-You can set different Artifactory URLs for snapshot and release version by setting the `ARTIFACTORY_URL` Gradle Property.
+You can set different Artifactory details for snapshot and release version by setting the following Gradle Properties.
+* ARTIFACTORY_REPO
+* ARTIFACTORY_USER
+* ARTIFACTORY_PASSWORD
+* ARTIFACTORY_URL
+
+If the gradle property is not set, the System Environment will be used.
 
 ```groovy
 def isSnapshot = project.version.contains('-')
 if (isSnapshot) {
+  project.ext.ARTIFACTORY_REPO="repo-snapshot-local"
+  project.ext.ARTIFACTORY_USER="snapshot_user"
+  project.ext.ARTIFACTORY_PASSWORD="snapshot_password"
   project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-snapshot-local"
 } else {
+  project.ext.ARTIFACTORY_REPO="repo-release-local"
+  project.ext.ARTIFACTORY_USER="release_user"
+  project.ext.ARTIFACTORY_PASSWORD="release_password"
   project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-release-local"
 }
 apply from: '../config/publish/artifactory.gradle'
+```
+
+Note:
+Gradle Properties can also be used for Bintray details.
+* BINTRAY_USER
+* BINTRAY_KEY
+* BINTRAY_REPO
+* BINTRAY_PACKAGE_NAME
+
+```groovy
+def isPatch = project.version.endsWith('.1')
+if (isPatch) {
+  project.ext.BINTRAY_USER="patch_user"
+  project.ext.BINTRAY_KEY="patch_password"
+  project.ext.BINTRAY_REPO="your_bintray_patch_repo_name"
+} else {
+  project.ext.BINTRAY_USER="user"
+  project.ext.BINTRAY_KEY="password"
+  project.ext.BINTRAY_REPO="your_bintray_repo_name"
+}
+project.ext.BINTRAY_PACKAGE_NAME="your_bintray_package_name"
+apply from: '../config/publish/bintray.gradle'
 ```
 
 ## Configuration

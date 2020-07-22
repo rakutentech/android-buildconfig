@@ -1,9 +1,9 @@
 apply plugin: 'com.jfrog.bintray'
 
-def user = System.getenv('BINTRAY_USER')
-def key = System.getenv('BINTRAY_KEY')
-def repo = System.getenv('BINTRAY_REPO')
-def pkgName = System.getenv('BINTRAY_PACKAGE_NAME')
+def user = project.ext.hasProperty('BINTRAY_USER') ? project.ext.BINTRAY_USER : System.getenv('BINTRAY_USER')
+def key = project.ext.hasProperty('BINTRAY_KEY') ? project.ext.BINTRAY_KEY : System.getenv('BINTRAY_KEY')
+def repo = project.ext.hasProperty('BINTRAY_REPO') ? project.ext.BINTRAY_REPO : System.getenv('BINTRAY_REPO')
+def pkgName = project.ext.hasProperty('BINTRAY_PACKAGE_NAME') ? project.ext.BINTRAY_PACKAGE_NAME : System.getenv('BINTRAY_PACKAGE_NAME')
 
 bintray {
   it.user = user
