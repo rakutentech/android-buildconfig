@@ -1,0 +1,41 @@
+version: 2.1  
+  
+jobs:
+  publish:
+    description: Publish a file to App Center. This job expects that you have persisted a workspace in a previous job and it will attach the workspace at `./`.
+    parameters:
+      group:
+        description: Group name from App Center.
+        type: string
+      file:
+        description: Path of file to publish. This can be a build artifact from a previous step which was persisted to the workspace.
+        type: string
+      app:
+        description: App name from App Center.
+        type: string
+      token:
+        description: Token for publishing to App Center.
+        type: string
+      notes:
+        description: Notes that will be attached to the App Center release.
+        type: string
+        default: ""
+    docker:
+      - image: circleci/node
+    working_directory: ~/code
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Install App Center CLI
+          command: npm init --yes && npm install appcenter-cli
+      - run:
+          name: Upload and distribute release to App Center
+          command: >
+            npx appcenter distribute release
+            --group <<parameters.group>>
+            --file <<parameters.file>>
+            --app <<parameters.app>>
+            --release-notes <<parameters.notes>>
+            --token <<parameters.token>>
+            --quiet

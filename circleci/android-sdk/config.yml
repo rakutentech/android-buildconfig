@@ -1,0 +1,104 @@
+version: 2.1
+
+android-docker-image: &android-docker-image circleci/android:api-29
+
+jobs: 
+  build:
+    description: Runs all checks (unit tests, lint, etc.) and assembles all binaries including the SDK `.aar` files and the Sample App `.apk` files. Build artifacts will be persisted to the Workspace, so they will be available for use in other jobs. The SDK artifacts in the `{sdk-path}/build/` folder will be persisted and the Sample App APKs will be persisted to the `apk' folder. This job assumes that you are using the android-buildconfig (https://github.com/rakutentech/android-buildconfig) and have setup your project to use axion-release-plugin (https://github.com/allegro/axion-release-plugin) for versioning. It also assumes that your Github repo is setup to use Code Cov (https://codecov.io) and it will upload coverage there.
+    parameters:
+      gradle-cache-key:
+        description: Key used by CircleCI for saving the Gradle cache ('~/.gradle'). If the key changes, then CircleCI will not use the saved cache. This value should be based on a checksum of all 'build.gradle' files in your project.
+        default: >- 
+          gradle-
+          {{ checksum "build.gradle" }}
+          {{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+        type: string
+      maven-cache-key:
+        description: Key used by CircleCI for saving the Maven cache ('~/.m2'). If the key changes, then CircleCI will not use the saved cache. The Maven cache is typically only used by Robolectric, so this value should be based on a checksum of the file which contains your Robolectric settings.
+        default: maven
+        type: string
+      sdk-path:
+        description: Path to the SDK module of your project, relative to the root directory.
+        type: string
+      sample-app-path:
+        description: Path to the Sample App module of your project, relative to the root directory.
+        type: string
+      after-prepare-steps:
+        description: Steps to run after the built-in preparation steps have run (checkout, git submodule preparation, and downloading dependencies).
+        type: steps
+        default: []
+    docker:
+      - image: *android-docker-image
+    working_directory: ~/code
+    environment:
+      # from https://discuss.circleci.com/t/circle-ci-v2-and-android-memory-issues/11207
+      JVM_OPTS: "-Xmx1024m -XX:+PrintFlagsFinal -XX:+PrintGCDetails"
+      _JAVA_OPTIONS: "-Xmx1024m"
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1 -Dorg.gradle.parallel=false"
+    steps:
+      - checkout
+      - run: git submodule update --init
+      - restore_cache:
+          key: <<parameters.gradle-cache-key>>
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: <<parameters.gradle-cache-key>>
+      - restore_cache:
+          ## Robolectric uses maven to download sources, so we must use a different cache for maven
+          key: <<parameters.maven-cache-key>>
+      - steps: <<parameters.after-prepare-steps>>
+      - run:
+          name: Run Check
+          command: ./gradlew check
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: <<parameters.maven-cache-key>>
+      - run:
+          name: Assemble
+          command: ./gradlew assemble
+      - run:
+          name: Current Version
+          command: ./gradlew currentVersion
+      - run:
+          name: Upload Code Coverage
+          command: bash <(curl -s https://codecov.io/bash)
+      - store_artifacts:
+          path: <<parameters.sdk-path>>/build/reports
+          destination: reports/
+      - store_test_results:
+          path: <<parameters.sdk-path>>/build/test-results
+      - store_artifacts:
+          path: <<parameters.sdk-path>>/build/outputs/aar
+          destination: aar/
+      - persist_to_workspace:
+          root: <<parameters.sample-app-path>>/build/outputs
+          paths:
+            - apk/
+      - persist_to_workspace:
+          root: ~/code
+          paths:
+            - <<parameters.sdk-path>>/build/
+
+  publish:
+    description: Publish SDK (run Gradle's 'publish' command). Previously persisted workspace will be attached at `./`.
+    docker:
+      - image: *android-docker-image
+    working_directory: ~/code
+    environment:
+      JVM_OPTS: "-Xmx3200m"
+    steps:
+      - checkout
+      - run: git submodule update --init
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Current Version
+          command: ./gradlew cV
+      - run:
+          name: Publish Artifacts
+          command: ./gradlew publish
