@@ -1,0 +1,32 @@
+apply plugin: 'org.ajoberstar.git-publish'
+
+if(!project.hasProperty('docPublishing')) project.ext.docPublishing = [:]
+
+gitPublish {
+    repoUri = project.ext.docPublishing.repoUri
+    referenceRepoUri = project.ext.docPublishing.repoUri
+    branch = 'gh-pages'
+    contents {
+        from("$buildDir/publishableDocs/_versions") {
+            into '_versions'
+        }
+        from("$buildDir/publishableDocs/docs") {
+            into 'docs'
+        }
+    }
+    preserve {
+        include '**/**'
+    }
+    commitMessage = "Publish documentation for $project.version"
+}
+
+def isSnapshot = project.version.contains('-')
+if (isSnapshot) {
+    print "Documentation not published for snapshot version."
+} else {
+    def docsGenerationTask = tasks.findByName('generatePublishableDocs')
+    if (docsGenerationTask) {
+        gitPublishPush.dependsOn docsGenerationTask
+        publish.dependsOn gitPublishPush
+    }
+}
