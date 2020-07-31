@@ -58,6 +58,9 @@ To ensure usability we follow these rules:
   * AGP 3.6.2 (requires Gradle 5.6.4+).
   * Targets (and builds with) SDK 29.
 
+### 4.2.0 (2020-07-31)
+* Added config for [publishing documentation to gh-pages](publish/documentation/README.md)
+
 ### 4.1.0 (2020-07-22)
 * Added support for using Gradle Property for repository details to handle different settings for snapshot and release repo.
 
