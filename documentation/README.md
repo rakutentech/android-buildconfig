@@ -31,7 +31,7 @@ project.ext.documentation = [
 apply from: '../config/documentation/doclava/android.gradle'
 ```
 
-## Dokka
+## For Dokka
 
 ### Documentation for Kotlin projects
 ```groovy
@@ -53,4 +53,37 @@ dokka {
     }
   }
 }
+```
+
+## For User Guide
+
+### Compiles a markdown file to html and adds it as `USERGUIDE-final.html` to the generated javadoc from the Doclava task.
+
+```groovy
+// the user guide gradle file needs to be included first!
+apply from: '../config/documentation/userguide/userguide.gradle'
+apply from: '../config/documentation/doclava/android.gradle'
+```
+
+### Customization
+
+Make sure that the `javadocOverview` from `userguide.gradle` will be set to the `project.ext.documentation` if customization is done for `doclava`.
+
+```groovy
+apply from: '../config/documentation/userguide/userguide.gradle'
+def overview = project.ext.documentation.javadocOverview
+
+project.ext.documentation = [
+    javadocOverview: overview,
+    classpath: [ // anything that can be resolved by Project#files
+        'path/to/additional/classpath',
+        configurations.javadocClasspath.files as List
+    ], // see https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#files-java.lang.Object...-
+    source: { // closue that evaluates to a FileTree object, will be invoked after the project is evaluated, with no arguments
+        fileTree(project(':subproject-a').android.sourceSets.main.java.srcDirs[0]) +
+        fileTree(project(':subproject-b').android.sourceSets.main.java.srcDirs[0])
+    },
+    failOnError: true
+]
+apply from: '../config/documentation/doclava/android.gradle'
 ```
