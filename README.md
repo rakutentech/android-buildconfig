@@ -59,6 +59,9 @@ To ensure usability we follow these rules:
   * AGP 3.6.2 (requires Gradle 5.6.4+).
   * Targets (and builds with) SDK 29.
 
+### 4.3.0 (2020-08-06)
+* Added config for [creating html version of the userguide markdown](documentation/README.md) and adding it to the generated javadoc.
+
 ### 4.2.0 (2020-07-31)
 * Added config for [publishing documentation to gh-pages](publish/documentation/README.md)
 

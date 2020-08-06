@@ -1,0 +1,51 @@
+buildscript {
+  repositories {
+    jcenter()
+    maven { url 'http://dl.bintray.com/content/aalmiray/kordamp' }
+  }
+  dependencies {
+    classpath 'org.kordamp:markdown-gradle-plugin:1.0.0'
+  }
+}
+
+import org.kordamp.gradle.markdown.MarkdownToHtmlTask
+
+if (!project.hasProperty('documentation')) project.ext.documentation = [:]
+if (project.documentation.userguide == null) project.documentation.userguide = 'USERGUIDE.md'
+
+def genHtmlDir = "${project.buildDir}/tmp"
+def markDownSource = project.documentation.userguide
+def generatedHtml = markDownSource.replaceAll(~/\.md$/, '.html')
+def processedHtml = markDownSource.replaceAll(~/\.md$/, '-final.html')
+project.ext.documentation.javadocOverview = "${genHtmlDir}/${processedHtml}"
+
+task copyUserguide(type: Copy) {
+  from project.projectDir
+  into genHtmlDir
+  include project.documentation.userguide
+}
+task generateUserguide(type: MarkdownToHtmlTask, dependsOn: copyUserguide) {
+  configuration.tables = true
+  configuration.fencedCodeBlocks = true
+  sourceDir = project.file(genHtmlDir)
+  outputDir = project.file(genHtmlDir)
+  inputEncoding = 'UTF-8'
+  outputEncoding = 'UTF-8'
+
+  doLast {
+    def source = new File("${genHtmlDir}/${generatedHtml}")
+    def target = new File("${genHtmlDir}/${processedHtml}")
+    // For some reason @ character in code blocks breaks the javadoc conversion - Replace it with HTML entity
+    def content = source.text.replaceAll("@", "&#64;")
+
+    target.createNewFile()
+    target.withOutputStream {
+      // overview.html should be enclosed by body
+      it << "<body>\n" << content << "\n</body>"
+    }
+  }
+}
+
+tasks.withType(Javadoc) {
+  it.dependsOn generateUserguide
+}
