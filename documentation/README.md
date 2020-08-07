@@ -1,6 +1,30 @@
 # Documentation Generation
 
-Configuration to create doclava javadoc or dokka kdoc.
+Configuration to create dokka kdoc or doclava javadoc.
+
+## For Dokka
+
+### Documentation for Kotlin projects
+```groovy
+// root script
+buildscript {
+  ext.dokka_version = '0.10.0'
+
+  dependencies {
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
+  }
+}
+
+// sub project
+apply from: '../config/documentation/dokka/android.gradle'
+dokka {
+  configuration {
+    sourceRoot {
+      path = "{path to source}"
+    }
+  }
+}
+```
 
 ## For Doclava
 ### Documentation for Java projects
@@ -31,33 +55,9 @@ project.ext.documentation = [
 apply from: '../config/documentation/doclava/android.gradle'
 ```
 
-## For Dokka
+### Adding User Guide to Javadoc
 
-### Documentation for Kotlin projects
-```groovy
-// root script
-buildscript {
-  ext.dokka_version = '0.10.0'
-
-  dependencies {
-    classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
-  }
-}
-
-// sub project
-apply from: '../config/documentation/dokka/android.gradle'
-dokka {
-  configuration {
-    sourceRoot {
-      path = "{path to source}"
-    }
-  }
-}
-```
-
-## For User Guide
-
-### Compiles a markdown file to html and adds it as `USERGUIDE-final.html` to the generated javadoc from the Doclava task.
+This compiles a markdown file to html and adds it as `USERGUIDE-final.html` to the generated javadoc from the Doclava task.
 
 ```groovy
 // the user guide gradle file needs to be included first!
@@ -65,7 +65,7 @@ apply from: '../config/documentation/userguide/userguide.gradle'
 apply from: '../config/documentation/doclava/android.gradle'
 ```
 
-### Customization
+#### Customization
 
 Make sure that the `javadocOverview` from `userguide.gradle` will be set to the `project.ext.documentation` if customization is done for `doclava`.
 
@@ -75,14 +75,8 @@ def overview = project.ext.documentation.javadocOverview
 
 project.ext.documentation = [
     javadocOverview: overview,
-    classpath: [ // anything that can be resolved by Project#files
-        'path/to/additional/classpath',
-        configurations.javadocClasspath.files as List
-    ], // see https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#files-java.lang.Object...-
-    source: { // closue that evaluates to a FileTree object, will be invoked after the project is evaluated, with no arguments
-        fileTree(project(':subproject-a').android.sourceSets.main.java.srcDirs[0]) +
-        fileTree(project(':subproject-b').android.sourceSets.main.java.srcDirs[0])
-    },
+    classpath: [ ... ],
+    source: { ... },
     failOnError: true
 ]
 apply from: '../config/documentation/doclava/android.gradle'
