@@ -86,6 +86,11 @@ jobs:
 
   publish:
     description: Publish SDK (run Gradle's 'publish' command). Previously persisted workspace will be attached at `./`.
+    parameters: 
+      after-prepare-steps:
+        description: Steps to run after the built-in preparation steps have run (checkout, and git submodule preparation).
+        type: steps
+        default: []
     docker:
       - image: *android-docker-image
     working_directory: ~/code
