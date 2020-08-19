@@ -95,6 +95,10 @@ Finally, when running your job you can convert this base64 string back into a fi
 
 ## Versions
 
+### 0.1.1 (2020-08-19)
+
+- Pin Android image to the latest version of api-29 which supported Java 8.
+
 ### 0.1.0 (2020-07-28)
 
 - Initial release.
