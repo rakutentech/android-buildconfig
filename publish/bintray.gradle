@@ -1,36 +1,28 @@
-apply plugin: 'com.jfrog.bintray'
-
 def user = project.hasProperty('BINTRAY_USER') ? project.BINTRAY_USER : System.getenv('BINTRAY_USER')
 def key = project.hasProperty('BINTRAY_KEY') ? project.BINTRAY_KEY : System.getenv('BINTRAY_KEY')
 def repo = project.hasProperty('BINTRAY_REPO') ? project.BINTRAY_REPO : System.getenv('BINTRAY_REPO')
 def pkgName = project.hasProperty('BINTRAY_PACKAGE_NAME') ? project.BINTRAY_PACKAGE_NAME : System.getenv('BINTRAY_PACKAGE_NAME')
 
-bintray {
-  it.user = user
-  it.key = key
-  publications = publishing.publications.collect{ it.name }
-  pkg {
-    it.repo = repo
-    name = pkgName
-    licenses = ['MIT']
-    vcsUrl = project.scmUrl
-    version {
-      name = project.version
-      desc = project.description
-      released  = new Date()
-      vcsTag = "v$project.version"
+publishing {
+  repositories {
+    maven {
+      it.name "Bintray"
+      credentials {
+        it.username user
+        it.password key
+      }
+      it.url "https://api.bintray.com/maven/$user/$repo/$pkgName/;publish=1"
     }
   }
 }
 
 task ensureBintrayCredentials {
   doFirst {
-    if (!user?.trim() || !key?.trim() || !repo?.trim()) {
+    if (!user?.trim() || !key?.trim() || !repo?.trim() || !pkgName.trim()) {
       throw new GradleException("You must define environment variables for " +
-              "BINTRAY_USER, BINTRAY_KEY, and BINTRAY_REPO.")
+              "BINTRAY_USER, BINTRAY_KEY, BINTRAY_REPO, and BINTRAY_PACKAGE_NAME.")
     }
   }
 }
 
-bintrayUpload.dependsOn ensureBintrayCredentials
-publish.dependsOn bintrayUpload
+publish.dependsOn ensureBintrayCredentials
