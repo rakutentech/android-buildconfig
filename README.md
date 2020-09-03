@@ -59,6 +59,9 @@ To ensure usability we follow these rules:
   * AGP 3.6.2 (requires Gradle 5.6.4+).
   * Targets (and builds with) SDK 29.
 
+### 4.3.1 (2020-09-03)
+* **Fixed:** Bintray publishing was failing due to an impcompatibility of the Bintray Gradle plugin with the Android Maven Publish plugin. The Bintray Gradle plugin has been removed so you no longer need to add `com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4` as a plugin dependency.
+
 ### 4.3.0 (2020-08-06)
 * Added config for [creating html version of the userguide markdown](documentation/README.md) and adding it to the generated javadoc.
 

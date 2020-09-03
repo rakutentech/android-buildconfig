@@ -22,20 +22,7 @@ ARTIFACTORY_URL=https://oss.jfrog.org/artifactory/oss-snapshot-local
 ARTIFACTORY_REPO=oss-snapshot-local
 ```
 
-### 2. Add plugins to buildscript
-
-You will need to add the [Bintray Plugin](https://github.com/bintray/gradle-bintray-plugin) to your classpath in your project's `build.gradle`. If you don't plan to publish to Bintray (and only to Artifactory) then you can skip this step.
-
-```groovy
-bulidscript {
-  dependencies {
-    // If publishing to Bintray
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-  }
-}
-```
-
-### 3. Apply publishing scripts
+### 2. Apply publishing scripts
 
 Next, in the `build.gradle` file for the module you wish to publish, you can apply the `config/publish/android.gradle` script and configure your publications.
 
