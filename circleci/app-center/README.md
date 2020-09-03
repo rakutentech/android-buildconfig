@@ -54,6 +54,10 @@ workflows:
 
 ## Versions
 
+### 0.1.1 (2020-09-03)
+
+- **Fixed:** Publishing was failing when the `notes` parameter contained spaces.
+
 ### 0.1.0 (2020-07-28)
 
 - Initial release.
