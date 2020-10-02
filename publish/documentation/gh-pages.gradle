@@ -26,7 +26,7 @@ if (isSnapshot) {
 } else {
     def docsGenerationTask = tasks.findByName('generatePublishableDocs')
     if (docsGenerationTask) {
-        gitPublishPush.dependsOn docsGenerationTask
+        gitPublishReset.dependsOn docsGenerationTask
         publish.dependsOn gitPublishPush
     }
 }
