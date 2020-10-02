@@ -36,6 +36,6 @@ jobs:
             --group <<parameters.group>>
             --file <<parameters.file>>
             --app <<parameters.app>>
-            --release-notes '<<parameters.notes>>'
+            --release-notes "<<parameters.notes>>"
             --token <<parameters.token>>
             --quiet
