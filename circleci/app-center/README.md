@@ -54,6 +54,10 @@ workflows:
 
 ## Versions
 
+### 0.1.2 (2020-10-05)
+
+- **Fixed:** `notes` parameter didn't allow environment variables to be used.
+
 ### 0.1.1 (2020-09-03)
 
 - **Fixed:** Publishing was failing when the `notes` parameter contained spaces.
