@@ -1,6 +1,6 @@
 # Shared Versions
 
-To keep all our libraries' transitive dependecies in sync we use this shared version configuration. We try to avoid transitive dependency versions conflicts as much as possible to make integration of our SDKs as easy as possible.
+To keep all our libraries' transitive dependencies in sync we use this shared version configuration. We try to avoid transitive dependency versions conflicts as much as possible to make integration of our SDKs as easy as possible.
 
 ## What's provided
 
