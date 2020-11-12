@@ -1,0 +1,35 @@
+apply plugin: 'com.github.spotbugs'
+
+import java.nio.file.Paths
+
+configurations {
+  spotbugsPlugins
+}
+
+// https://github.com/spotbugs/spotbugs-gradle-plugin
+spotbugs {
+    toolVersion = '4.1.3'
+    ignoreFailures = true
+    showProgress = true
+    excludeFilter = rootProject.file(Paths.get('config', 'quality', 'spotbugs', 'spotbugs-filter.xml'))
+    reportsDir = file("$project.buildDir/reports/spotbugs")
+    effort = "max"
+    reportLevel = "high"
+}
+
+check.dependsOn 'spotbugs'
+task spotbugs(group: 'verification',
+    description: 'spotbugs',
+    dependsOn: 'spotbugsRelease') {
+}
+
+dependencies {
+  compileOnly 'com.google.code.findbugs:annotations:3.0.1'
+  spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.10.1'
+}
+
+android {
+  defaultConfig {
+    consumerProguardFiles rootProject.file('config/quality/spotbugs/proguard-rules')
+  }
+}
