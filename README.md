@@ -29,7 +29,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
 * [Android project defaults](android/README.md)
 * [Quality Tools](quality/README.md)
   - Checkstyle
-  - Findbugs
+  - Spotbugs
   - Jacoco
   - PMD
   - Detekt

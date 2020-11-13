@@ -40,13 +40,13 @@ pmd {
 }
 ```
 
-### Findbugs
+### Spotbugs
 ```groovy
 // android plugin
-apply from: '../config/quality/findbugs/android.gradle'
+apply from: '../config/quality/spotbugs/android.gradle'
 
-// optional: extra configuration options, see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.FindBugsExtension.html
-findbugs {
+// optional: extra configuration options, see https://plugins.gradle.org/plugin/com.github.spotbugs
+spotbugs {
   showProgress = false
 }
 ```
