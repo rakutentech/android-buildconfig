@@ -1,12 +1,12 @@
 # Quality Tools
 These are default configurations for [checkstyle](https://github.com/checkstyle/checkstyle), [pmd](https://github.com/pmd/pmd),
-[findbugs](https://github.com/findbugsproject/findbugs), [jacoco](https://github.com/jacoco/jacoco) and
+[spotbugs](https://plugins.gradle.org/plugin/com.github.spotbugs), [jacoco](https://github.com/jacoco/jacoco) and
 [detekt](https://github.com/arturbosch/detekt), they do the following:
 
 * configure a project to use the tool by including a single script
 * register a task that will run as part of the `check` task
 ```groovy
-// android plugin -  applies all checkstyle, pmd, findbugs and jacoco to android projects
+// android plugin -  applies all checkstyle, pmd, spotbugs and jacoco to android projects
 apply from: '../config/quality/android.gradle'
 // java plugin - applies only checkstyle to java projects (TODO: add others)
 apply from: '../config/quality/java.gradle'
