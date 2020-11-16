@@ -1,5 +1,5 @@
 # Shared Build Configuration for Android libraries
-This repository contains common configuration to be used across our Android libraries. The advantage of sharing these configurations in mainly consistency of configuration among multiple libraries and reduction of boilerplate.
+This repository contains common configuration to be used across our Android libraries. The advantage of sharing these configurations is mainly consistency of configuration among multiple libraries and reduction of boilerplate.
 
 ## Kickstart
 First add the submodule to your project:
@@ -29,7 +29,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
 * [Android project defaults](android/README.md)
 * [Quality Tools](quality/README.md)
   - Checkstyle
-  - Findbugs
+  - Spotbugs
   - Jacoco
   - PMD
   - Detekt
@@ -58,6 +58,9 @@ To ensure usability we follow these rules:
 * Update versions:
   * AGP 3.6.2 (requires Gradle 5.6.4+).
   * Targets (and builds with) SDK 29.
+
+### 5.0.0 (2020-11-16)
+* Quality: replaced deprecated `FindBugs` with `SpotBugs`.
 
 ### 4.3.2 (2020-10-05)
 * **Fixed:** GitHub pages publishing would sometimes upload the incomplete documentation.

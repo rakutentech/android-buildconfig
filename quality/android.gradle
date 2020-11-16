@@ -1,6 +1,6 @@
 apply from: "$CONFIG.configDir/quality/checkstyle/android.gradle"
 apply from: "$CONFIG.configDir/quality/jacoco/android.gradle"
-apply from: "$CONFIG.configDir/quality/findbugs/android.gradle"
+apply from: "$CONFIG.configDir/quality/spotbugs/android.gradle"
 apply from: "$CONFIG.configDir/quality/pmd/android.gradle"
 apply from: "$CONFIG.configDir/quality/errorprone/android.gradle"
 
