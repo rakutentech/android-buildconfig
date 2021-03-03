@@ -1,24 +1,29 @@
 # Publishing
 
-These configurations can be used for publishing AARs to [Bintray](https://bintray.com/) or an [Artifactory](https://jfrog.com/artifactory/) Repo. This uses the [maven-publish-plugin](https://developer.android.com/studio/build/maven-publish-plugin) which is built-in to AGP 3.6.0+.
+These configurations can be used for publishing AARs to [Maven Central](https://central.sonatype.org/) or an [Artifactory](https://jfrog.com/artifactory/) Repo. This uses the [maven-publish-plugin](https://developer.android.com/studio/build/maven-publish-plugin) which is built-in to AGP 3.6.0+.
 
 ## Setup
 
 ### 1. Add Environment variables
 
-The following environment variables need to be set.
+The following need to be set as either environment variables or Gradle properties.
+
+#### Maven Central
 
 ```bash
-# If publishing to Bintray
-BINTRAY_USER=username
-BINTRAY_KEY=password
-BINTRAY_REPO=your_bintray_repo_name
-BINTRAY_PACKAGE_NAME=your_bintray_package_name
+MAVEN_CENTRAL_USER=username
+MAVEN_CENTRAL_PASSWORD=password
+MAVEN_CENTRAL_SIGNING_KEY_ID=your_key_id
+MAVEN_CENTRAL_SIGNING_PASSWORD=your_signing_password
+MAVEN_CENTRAL_SIGNING_KEY_RING_FILE=path/to/your/gpg-private-key.gpg
+```
 
-# If publishing to Artifactory (this example uses the Jfrog OSS Snapshot repo)
+#### Artifactory
+
+```bash
 ARTIFACTORY_USER=username
 ARTIFACTORY_PASSWORD=password
-ARTIFACTORY_URL=https://oss.jfrog.org/artifactory/oss-snapshot-local
+ARTIFACTORY_URL=https://www.example.com
 ARTIFACTORY_REPO=oss-snapshot-local
 ```
 
@@ -26,9 +31,7 @@ ARTIFACTORY_REPO=oss-snapshot-local
 
 Next, in the `build.gradle` file for the module you wish to publish, you can apply the `config/publish/android.gradle` script and configure your publications.
 
-Note that you publications must be configured inside the `afterEvaluate` phase. This is because the Android components which will be published aren't create until this phase.
-
-You can also apply either the `config/publish/bintray.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published. If you are using Bintray's [OSS Jfrog Artifactory](https://oss.jfrog.org/) for snapshots, you can apply the Artifactory script in the case that you're publishing a snapshot version.
+Note that your publications must be configured inside the `afterEvaluate` phase. This is because the Android components which will be published aren't create until this phase.
 
 ```groovy
 apply from: '../config/publish/android.gradle'
@@ -40,16 +43,37 @@ afterEvaluate {
       }
     }
 }
-
-def isSnapshot = project.version.contains('-')
-if (isSnapshot) {
-  apply from: '../config/publish/artifactory.gradle'
-} else {
-  apply from: '../config/publish/bintray.gradle'
-}
 ```
 
-This will do:
+Next, you can apply either the `config/publish/maven-central.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published.
+
+#### Maven Central
+
+If you wish to publish snapshots, you can use the `MAVEN_CENTRAL_IS_SNAPSHOT` property if your current version is a snapshot version.
+
+```groovy
+def isSnapshot = project.version.contains('-')
+if (isSnapshot) {
+  ext["MAVEN_CENTRAL_IS_SNAPSHOT"] = true
+}
+apply from: '../config/publish/maven-central.gradle'
+```
+
+#### Artifactory
+
+If you wish to publish snapshots, you can publish to your snapshot URL if your current version is a snapshot version.
+
+```groovy
+def isSnapshot = project.version.contains('-')
+if (isSnapshot) {
+  ext["ARTIFACTORY_URL"] = System.getenv("ARTIFACTORY_URL_SNAPSHOT")
+} else {
+  ext["ARTIFACTORY_URL"] = System.getenv("ARTIFACTORY_URL_RELEASE")
+}
+apply from: '../config/publish/artifactory.gradle'
+```
+
+#### The above scripts will do:
 
 * create maven publication for with the name `myAndroidLibraryName`
   + uses `project.name`, `project.group`, `project.version`, `project.description`, `project.url`, `project.licenseName`, `project.licenseUrl`, and `project.scmUrl`
@@ -86,28 +110,6 @@ if (isSnapshot) {
 apply from: '../config/publish/artifactory.gradle'
 ```
 
-Note:
-Gradle Properties can also be used for Bintray details.
-* BINTRAY_USER
-* BINTRAY_KEY
-* BINTRAY_REPO
-* BINTRAY_PACKAGE_NAME
-
-```groovy
-def isPatch = project.version.endsWith('.1')
-if (isPatch) {
-  project.ext.BINTRAY_USER="patch_user"
-  project.ext.BINTRAY_KEY="patch_password"
-  project.ext.BINTRAY_REPO="your_bintray_patch_repo_name"
-} else {
-  project.ext.BINTRAY_USER="user"
-  project.ext.BINTRAY_KEY="password"
-  project.ext.BINTRAY_REPO="your_bintray_repo_name"
-}
-project.ext.BINTRAY_PACKAGE_NAME="your_bintray_package_name"
-apply from: '../config/publish/bintray.gradle'
-```
-
 ## Configuration
 
 You can overwrite the default values of a publication by passing in a map, e.g.
@@ -118,20 +120,49 @@ afterEvaluate {
     publishing {
       publications {
         myJavaLibraryName(MavenPublication, androidArtifact(
-          from:         compontents.groovy, // different components source
-          artifacts:    [someJarTask], // Additional artifacts
-          groupId:      'different-group',
-          artifactId:   'different-artifact-id',
-          name:         'different-name',
-          version:      'different-version',
-          url:          'different url',
-          description:  'different description',
-          licenseName:  'different license',
-          licenseUrl:   'https://www.example.com',
-          scmUrl:       'https://www.example.com/repo.git',
-          excludeSourceJar: false // By default, a Jar containing the module's source in added to artifacts - set to true to exlcude the Jar
+          from:                     compontents.groovy, // different components source
+          artifacts:                [someJarTask], // Additional artifacts
+          groupId:                  'different-group',
+          artifactId:               'different-artifact-id',
+          name:                     'different-name',
+          version:                  'different-version',
+          url:                      'different url',
+          description:              'different description',
+          licenseName:              'different license',
+          licenseUrl:               'https://www.example.com',
+          scmUrl:                   'https://www.example.com/repo.git',
+          developerName:            'your name',
+          developerEmail:           'your.email@example.com',
+          developerOrganization:    'your org',
+          developerOrganizationUrl: 'your org url',
+          readme:                   'path/to/your/readme.md',
+          excludeSourceJar:         false // By default, a Jar containing the module's source in added to artifacts - set to true to exlcude the Jar
         ))
       }
     }
 }
+```
+
+## Maven Central Signing
+
+If you are publishing to Maven Central, your artifacts must be signed using a PGP key. The above script has the signing config built-in, so you just need to provide the username, password, and path to your PGP private key as shown in the above examples. Also, you must distribute your public key to a key server.
+
+See [Maven Central's Documentation](https://central.sonatype.org/pages/working-with-pgp-signatures.html) for instructions on generating and distributing a PGP key.
+
+### Using your Signing Key on CI
+
+Your private key MUST NOT be committed to your repository. To use it on CI, you can base 64 encode the key file, set it as an environment variable on your CI settings, and then decode the environment variable to a file at build time.
+
+First, convert the keystore file to a base64 string:
+
+```bash
+base64 your-key.gpg
+```
+
+Copy the output of this and set it as an environment variable `RELEASE_PGP_KEY_BASE64` in your CI. Then, when running your job you can convert this base64 string back into a file.
+
+```bash
+  if [[ $RELEASE_PGP_KEY_BASE64 != "" ]]; then
+      base64 -d \<<< $RELEASE_KEYSTORE_BASE64 > ./your-key.gpg
+  fi
 ```
