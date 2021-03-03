@@ -56,8 +56,14 @@ To ensure usability we follow these rules:
 ## Versions <a name="versions"></a>
 ### HEAD
 * Update versions:
-  * AGP 3.6.2 (requires Gradle 5.6.4+).
-  * Targets (and builds with) SDK 29.
+  * AGP 4.0.2 (requires Gradle 6.1.1+).
+  * Targets (and builds with) SDK 30.
+
+### 6.0.0 (2021-03-03)
+* **Feature:** Added Maven Central publishing script.
+* **Removed:** Bintray/JCenter publishing script was removed because these services are being [shutdown](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).
+* **Updated:** Target and compile versions bumped to 30.
+* **Updated:** AGP bumped to 4.0.2. This now requires your project to use Gradle 6.1.1+.
 
 ### 5.0.0 (2020-11-16)
 * Quality: replaced deprecated `FindBugs` with `SpotBugs`.
