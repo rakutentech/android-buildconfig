@@ -22,13 +22,19 @@ task kDocJar(type: Jar) {
     dependsOn kDocTask
     from dokka.outputDirectory
   }
-  archiveClassifier = 'kdoc'
+  archiveClassifier = 'javadoc'
 }
 
 ext.androidArtifact = { Map config ->
-  return {
-    config = config ?: [:]
+  config = config ?: [:]
 
+  task javaDocReadmeJar(type: Jar) {
+    def readme = project.hasProperty("readme") ? project.readme : "$projectDir/../README.md"
+    from config.get('readme') ?: readme
+    archiveClassifier = "javadoc"
+  }
+
+  return {
     from config.get('from') ?: components.release
     artifactId config.get('artifactId') ?: project.name
     groupId config.get('groupId') ?: project.group
@@ -39,9 +45,11 @@ ext.androidArtifact = { Map config ->
     }
     if (javaDocTask) {
       artifact javaDocJar
-    }
-    if (kDocTask) {
+    } else if (kDocTask) {
       artifact kDocJar
+    } else {
+      // Maven Central requires a javadoc JAR even if this is not a Java project
+      artifact javaDocReadmeJar
     }
     config.get('artifacts')?.each {
       artifact it
@@ -59,6 +67,14 @@ ext.androidArtifact = { Map config ->
       }
       scm {
         url = config.get('scmUrl') ?: project.scmUrl
+      }
+      developers {
+        developer {
+          name = config.get('developerName') ?: project.developerName
+          email = config.get('developerEmail') ?: project.developerEmail
+          organization = config.get('developerOrganization') ?: project.developerOrganization
+          organizationUrl = config.get('developerOrganizationUrl') ?: project.developerOrganizationUrl
+        }
       }
     }
   }

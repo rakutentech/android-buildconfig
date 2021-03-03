@@ -1,0 +1,47 @@
+apply plugin: 'signing'
+
+def property = { key ->
+  return (project.hasProperty(key) ? project."$key" : System.getenv(key) )
+}
+
+def user = property("MAVEN_CENTRAL_USER")
+def password = property("MAVEN_CENTRAL_PASSWORD")
+def signingKeyId = property("MAVEN_CENTRAL_SIGNING_KEY_ID")
+def signingPassword = property("MAVEN_CENTRAL_SIGNING_PASSWORD")
+def signingKeyRingFile = property("MAVEN_CENTRAL_SIGNING_KEY_RING_FILE")
+def isSnapshot = property("MAVEN_CENTRAL_IS_SNAPSHOT")
+
+publishing {
+  repositories {
+    maven {
+      it.name "MavenCentral${isSnapshot ? "Snapshot" : "Staging"}"
+      credentials {
+        it.username user
+        it.password password
+      }
+      it.url isSnapshot
+              ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+              : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+    }
+  }
+}
+
+ext["signing.keyId"] = signingKeyId
+ext["signing.password"] = signingPassword
+ext["signing.secretKeyRingFile"] = signingKeyRingFile
+
+signing {
+  sign publishing.publications
+}
+
+task ensureMavenCentralCredentials {
+  doFirst {
+    if (!user?.trim() || !password?.trim() || !signingKeyId?.trim() || !signingPassword.trim() || !signingKeyRingFile.trim()) {
+      throw new GradleException("You must define environment variables for " +
+              "MAVEN_CENTRAL_USER, MAVEN_CENTRAL_PASSWORD, " +
+              "MAVEN_CENTRAL_SIGNING_KEY_ID, MAVEN_CENTRAL_SIGNING_PASSWORD, and MAVEN_CENTRAL_SIGNING_KEY_RING_FILE.")
+    }
+  }
+}
+
+publish.dependsOn ensureMavenCentralCredentials
