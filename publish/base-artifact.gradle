@@ -1,0 +1,70 @@
+import java.nio.file.Paths
+
+apply plugin: 'maven-publish'
+
+def javaDocTask = tasks.findByName('generateDoclava')
+task javaDocJar(type: Jar) {
+  if(javaDocTask) {
+    dependsOn javaDocTask
+  }
+  from Paths.get("$buildDir", 'javadocs')
+  archiveClassifier = "javadoc"
+}
+
+def kDocTask = tasks.findByName('dokka')
+task kDocJar(type: Jar) {
+  if (kDocTask) {
+    dependsOn kDocTask
+    from dokka.outputDirectory
+  }
+  archiveClassifier = 'javadoc'
+}
+
+ext.baseArtifact = { Map config ->
+  task javaDocReadmeJar(type: Jar) {
+    def readme = project.hasProperty("readme") ? project.readme : "$projectDir/../README.md"
+    from config.get('readme') ?: readme
+    archiveClassifier = "javadoc"
+  }
+
+  return {
+    artifactId config.get('artifactId') ?: project.name
+    groupId config.get('groupId') ?: project.group
+    version config.get('version') ?: project.version
+
+    if (javaDocTask) {
+      artifact javaDocJar
+    } else if (kDocTask) {
+      artifact kDocJar
+    } else {
+      // Maven Central requires a javadoc JAR even if this is not a Java project
+      artifact javaDocReadmeJar
+    }
+    config.get('artifacts')?.each {
+      artifact it
+    }
+
+    pom {
+      name = config.get('name') ?: project.name
+      description = config.get('description') ?: project.description
+      url = config.get('url') ?: project.url
+      licenses {
+        license {
+          name = config.get('licenseName') ?: project.licenseName
+          url = config.get('licenseUrl') ?: project.licenseUrl
+        }
+      }
+      scm {
+        url = config.get('scmUrl') ?: project.scmUrl
+      }
+      developers {
+        developer {
+          name = config.get('developerName') ?: project.developerName
+          email = config.get('developerEmail') ?: project.developerEmail
+          organization = config.get('developerOrganization') ?: project.developerOrganization
+          organizationUrl = config.get('developerOrganizationUrl') ?: project.developerOrganizationUrl
+        }
+      }
+    }
+  }
+}

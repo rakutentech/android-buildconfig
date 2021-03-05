@@ -59,6 +59,9 @@ To ensure usability we follow these rules:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
 
+### 6.1.0 (2021-03-05)
+* **Feature:** Added publication configuration for Java libraries.
+
 ### 6.0.0 (2021-03-03)
 * **Feature:** Added Maven Central publishing script.
 * **Removed:** Bintray/JCenter publishing script was removed because these services are being [shutdown](https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter/).

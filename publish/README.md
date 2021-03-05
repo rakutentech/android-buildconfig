@@ -4,7 +4,7 @@ These configurations can be used for publishing AARs to [Maven Central](https://
 
 ## Setup
 
-### 1. Add Environment variables
+### 1. Add Environment variables for publishing
 
 The following need to be set as either environment variables or Gradle properties.
 
@@ -27,11 +27,30 @@ ARTIFACTORY_URL=https://www.example.com
 ARTIFACTORY_REPO=oss-snapshot-local
 ```
 
-### 2. Apply publishing scripts
+### 2. Add Gradle properties for configuration
 
-Next, in the `build.gradle` file for the module you wish to publish, you can apply the `config/publish/android.gradle` script and configure your publications.
+Next, you must add the following properties to your `gradle.properties` file. Alternatively, you can pass these values directly to the configuration script as shown [Advanced Configuration](#advanced-configuration).
 
-Note that your publications must be configured inside the `afterEvaluate` phase. This is because the Android components which will be published aren't create until this phase.
+```
+group = com.example.your.group.id
+url = https://www.example.com
+description = Description of your library
+licenseName = "MIT License"
+licenseUrl = https://opensource.org/licenses/MIT
+scmUrl = https://example.com/yourproject.git
+developerName = YourName
+developerEmail = your.email@example.com
+developerOrganization = Your Organization
+developerOrganizationUrl = https://www.example.com
+```
+
+### 3. Configure your publications
+
+Next, in the `build.gradle` file for the module you wish to publish, you can apply the script to configure your publications. You can use either the Android or Java configuration, depending on your library type.
+
+#### Android Library
+
+Note that your publications must be configured inside the `afterEvaluate` phase. This is because the Android components which will be published aren't created until this phase.
 
 ```groovy
 apply from: '../config/publish/android.gradle'
@@ -44,6 +63,27 @@ afterEvaluate {
     }
 }
 ```
+
+#### Java Library
+
+```groovy
+apply from: '../config/publish/java.gradle'
+publishing {
+  publications {
+    myJavaLibraryName(MavenPublication, javaArtifact())
+  }
+}
+```
+
+#### This script will do:
+
+* create maven publication for with the name `myAndroidLibraryName` (or `myJavaLibraryName`)
+  + Configures your publication using the meta-data you set in `gradle.properties` in the [above step](#2.-add-gradle-properties-for-configuration).
+    + Or this meta-data can be optionally configured by passing a Map, as shown in [Advanced Configuration](#advanced-configuration).
+  + Configures publication for `component.release` as `from` field - your project's `AAR`. (Or configures publication for `component.java` in the case of a Java library).
+  + Add artifacts for the JavaDocs (for Java projects) or KDocs (for Kotlin projects) and a JAR containing your project's source code to your publications.
+
+### 4. Configure publishing to Maven Central or Artifactory
 
 Next, you can apply either the `config/publish/maven-central.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published.
 
@@ -73,14 +113,11 @@ if (isSnapshot) {
 apply from: '../config/publish/artifactory.gradle'
 ```
 
-#### The above scripts will do:
+#### This script will do:
 
-* create maven publication for with the name `myAndroidLibraryName`
-  + uses `project.name`, `project.group`, `project.version`, `project.description`, `project.url`, `project.licenseName`, `project.licenseUrl`, and `project.scmUrl`
-  + The values are set in `gradle.properties`, but can be optionally configured by passing a Map, as shown below.
-  + Configures publication for `component.release` as `from` field - your project's `AAR`
-  + Add artifacts for the JavaDocs (for Java projects) or KDocs (for Kotlin projects) and a JAR containing your project's source code to your publications.
-  + Configure the repos where your artifacts will be published - Artifactory and/or Bintray. This uses the credentials you've set as environment variables.
++ Configure the repos where your artifacts will be published - Maven Central or Artifactory.
++ Uses the credentials you've set as environment variables.
++ If Maven Central, configures the PGP signing key as defined in your environment variables.
 
 ## Custom Features
 
@@ -110,7 +147,7 @@ if (isSnapshot) {
 apply from: '../config/publish/artifactory.gradle'
 ```
 
-## Configuration
+## Advanced Configuration
 
 You can overwrite the default values of a publication by passing in a map, e.g.
 
@@ -163,6 +200,6 @@ Copy the output of this and set it as an environment variable `RELEASE_PGP_KEY_B
 
 ```bash
   if [[ $RELEASE_PGP_KEY_BASE64 != "" ]]; then
-      base64 -d \<<< $RELEASE_KEYSTORE_BASE64 > ./your-key.gpg
+      base64 -d <<< $RELEASE_PGP_KEY_BASE64 > ./your-key.gpg
   fi
 ```
