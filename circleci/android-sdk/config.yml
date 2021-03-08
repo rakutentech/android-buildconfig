@@ -101,6 +101,7 @@ jobs:
       - run: git submodule update --init
       - attach_workspace:
           at: ./
+      - steps: <<parameters.after-prepare-steps>>
       - run:
           name: Current Version
           command: ./gradlew cV
