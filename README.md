@@ -1,6 +1,6 @@
 # Android Documention Theme for Github Pages
 
-This is a Jekyll theme for GitHub Pages. It's intended to allow you to have published documentation for multiple versions of your a library. The viewer of the docs wiill be able to select which version they wish to view.
+This is a Jekyll theme for GitHub Pages. It's intended to allow you to have published documentation for multiple versions of your library. The viewer of the docs will be able to select which version they wish to view.
 
 ## How to use
 
