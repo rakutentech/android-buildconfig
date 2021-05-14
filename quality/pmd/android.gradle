@@ -8,7 +8,7 @@ pmd {
   ruleSetFiles = files(rootProject.file('config/quality/pmd/pmd-ruleset.xml'))
   ruleSets = [] // see https://stackoverflow.com/a/34145485
   targetJdk = TargetJdk.VERSION_1_7
-  toolVersion = '5.8.1' // see https://github.com/pmd/pmd/releases
+  toolVersion = '6.0.0' // see https://github.com/pmd/pmd/releases
 }
 
 check.dependsOn 'pmd'
