@@ -20,7 +20,13 @@ workflows:
     jobs:
       # Run your build job
       - android-sdk/build:
-
+          ...
+          # this is convenient if you want to use the app-center/mapping job
+          post-steps:
+            - persist_to_workspace:
+                root: yourapp/build/outputs
+                paths:
+                  - mapping/
       # Publish STG build to Testers
       - app-center/publish:
           name: publish-test-app-stg    
@@ -50,9 +56,28 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+      # Upload mapping for production build
+      - app-center/mapping:
+          name: publish-mapping-for-test-app-prod
+          file: mapping/release/mapping.txt
+          app: $APP_CENTER_APP_NAME
+          token: $APP_CENTER_TOKEN
+          version-name: $APP_CENTER_VERSION_NAME
+          version-code: $APP_CENTER_VERSION_CODE
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 ```
 
 ## Versions
+
+### 0.1.3 (2021-06-09)
+
+- **Feature:** added mapping job to upload de-symbolization/de-obfuscation mapping files
 
 ### 0.1.2 (2020-10-05)
 
