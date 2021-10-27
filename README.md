@@ -59,6 +59,9 @@ To ensure usability we follow these rules:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
 
+### 6.2.0 (2021-10-27)
+* **Feature:** Updated `compile` and `target` to API 31, and min to API 23 in `versions.gradle`
+
 ### 6.1.0 (2021-03-05)
 * **Feature:** Added publication configuration for Java libraries.
 
