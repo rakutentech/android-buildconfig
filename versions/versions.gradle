@@ -6,8 +6,8 @@
 // than the consumer applications.
 ext.CONFIG.versions = [
     // Java compatibility target version
-    java      : '1.7',
-    kotlin    : '1.4.10',
+    java      : '11',
+    kotlin    : '1.4.31',
 
     // Android plugins, tools, SDK and libraries
     android   : [
@@ -16,11 +16,11 @@ ext.CONFIG.versions = [
             support     : '26.0.0',
             volley      : '1.1.1',
         ],
-        plugin: '4.0.2',
+        plugin: '7.1.0',
         sdk      : [
-            compile: 30,
-            target : 30,
-            min    : 21,
+            compile: 31,
+            target : 31,
+            min    : 23,
         ],
     ],
 

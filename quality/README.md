@@ -88,14 +88,14 @@ buildscript {
   apply from: "config/index.gradle"
 }
 plugins {
-  id 'io.gitlab.arturbosch.detekt' version '1.1.1'
+  id 'io.gitlab.arturbosch.detekt' version '1.19.0'
 }
 
 // sub project
 apply from: "../config/quality/detekt/android.gradle"
 dependencies {
   // Add to enable the KtLint rules
-  detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.1.1"
+  detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
 }
 ```
 

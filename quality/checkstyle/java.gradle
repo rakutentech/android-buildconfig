@@ -1,4 +1,4 @@
-apply plugin: 'checkstyle'
+apply plugin: "checkstyle"
 
 import java.nio.file.Paths
 import java.nio.file.Files
@@ -6,12 +6,12 @@ import java.nio.file.StandardCopyOption
 
 // see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 checkstyle {
-  toolVersion '8.18' // see https://github.com/checkstyle/checkstyle/releases
-  configDir rootProject.file(Paths.get('config', 'quality', 'checkstyle'))
-  ignoreFailures false
-  showViolations true
-  maxErrors 0
-  maxWarnings Integer.MAX_VALUE
+  toolVersion = '8.18' // see https://github.com/checkstyle/checkstyle/releases
+  configDirectory = rootProject.file(Paths.get('config', 'quality', 'checkstyle'))
+  ignoreFailures = false
+  showViolations = true
+  maxErrors = 0
+  maxWarnings = Integer.MAX_VALUE
 }
 
 // add a task to reformat code according to the Google Java style
