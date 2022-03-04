@@ -8,7 +8,7 @@ Configuration to create dokka kdoc or doclava javadoc.
 ```groovy
 // root script
 buildscript {
-  ext.dokka_version = '0.10.0'
+  ext.dokka_version = '1.6.10'
 
   dependencies {
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
@@ -17,12 +17,12 @@ buildscript {
 
 // sub project
 apply from: '../config/documentation/dokka/android.gradle'
-dokka {
-  configuration {
-    sourceRoot {
-      path = "{path to source}"
+dokkaGfm.configure {
+    dokkaSourceSets {
+        named("{source name i.e. 'main'}") {
+            sourceRoots.from(file("{path to source}"))
+        }
     }
-  }
 }
 ```
 
