@@ -2,12 +2,20 @@ apply plugin: 'org.jetbrains.dokka'
 
 def docsBuildDirectory = "$buildDir/kdocs"
 
-dokka {
-  outputFormat = 'markdown'
-  outputDirectory = "$docsBuildDirectory"
-  configuration {
-    includeNonPublic = false
-    skipEmptyPackages = true
+dokkaGfm.configure {
+
+  dokkaSourceSets {
+    configureEach {
+      outputDirectory.set(file("$docsBuildDirectory"))
+      noAndroidSdkLink.set(false)
+      noJdkLink.set(false)
+      noStdlibLink.set(false)
+      noAndroidSdkLink.set(false)
+      includeNonPublic.set(false)
+      skipEmptyPackages.set(true)
+      skipDeprecated.set(false)
+      reportUndocumented.set(true)
+    }
   }
 }
 
@@ -18,8 +26,8 @@ def docsDirectory = "$buildDir/publishableDocs"
 def docsVersionDirectory = "$docsDirectory/docs/$version"
 
 task copyKDocs(type: Copy) {
-  dependsOn dokka
-  from "$docsBuildDirectory/$project.name"
+  dependsOn dokkaGfm
+  from "$docsBuildDirectory"
   into "$docsVersionDirectory/api"
 }
 
