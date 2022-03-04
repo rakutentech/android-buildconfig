@@ -12,6 +12,5 @@ buildscript {
 apply from: "$CONFIG.configDir/git-hooks/build.gradle"
 apply from: "$CONFIG.configDir/versions/versions.gradle"
 apply from: "$CONFIG.configDir/versions/repositories.gradle"
-apply from: "$CONFIG.configDir/quality/git-secrets/build.gradle"
 
 
