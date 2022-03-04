@@ -1,0 +1,35 @@
+
+task installGitSecretsHook{
+    def b = new StringBuffer()
+    println 'Git-secrets:'
+
+    def installGitSecrets = "git secrets --install -f".execute()
+    installGitSecrets.consumeProcessErrorStream(b)
+    println installGitSecrets.text
+
+    def registerGitSecrets = "git secrets --register-aws --global".execute()
+    registerGitSecrets.consumeProcessErrorStream(b)
+    println registerGitSecrets.text
+
+    if(b.contains("git: 'secrets' is not a git command. See 'git --help'.")) {
+        throw new StopExecutionException("git-secrets must be installed." +
+                "</p> " +
+                "git-secrets must be placed somewhere in your PATH so that it is picked up by git when running git secrets." +
+                "</p>" +
+                "Homebrew (for macOS users):</p>" +
+                "   brew install git-secrets" +
+                "</p>" +
+                "Windows:</p>" +
+                "   Run the provided install.ps1 powershell script. This will copy the needed files to an installation directory (%USERPROFILE%/.git-secrets by default) and add the directory to the current user PATH." +
+                "</p>" +
+                "   PS > ./install.ps1</p>" +
+                "*nix (Linux/macOS) </p>" +
+                "   You can use the install target of the provided Makefile to install git secrets and the man page. You can customize the install path using the PREFIX and MANPREFIX variables." +
+                "</p>" +
+                "   make install.</p>"
+        )
+    }
+    println b.toString()
+}
+
+tasks.init.dependsOn installGitSecretsHook

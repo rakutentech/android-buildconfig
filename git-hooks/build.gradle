@@ -1,0 +1,20 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+task installLocalGitHook(type: Copy){
+
+    def preCommitSubDirectory = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d'))
+    preCommitSubDirectory.mkdir()
+
+    def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit'))
+
+    Files.copy(
+            Paths.get(rootDir.absolutePath, 'config', 'git-hooks', 'pre-commit'),
+            Paths.get(hookFile.absolutePath),
+            StandardCopyOption.REPLACE_EXISTING
+    )
+    hookFile.setExecutable(true)
+}
+
+
