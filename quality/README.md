@@ -110,7 +110,7 @@ Prevents you from committing passwords and other sensitive information to a git 
 apply from: "../config/quality/git-secrets/build.gradle"
 ```
 
-Git secrets scan is enabled by default, to disable it you can set enableGitSecrets key to false as environment variables.
+Git secrets scan is enabled by default, to disable it you can set enableGitSecrets key to false as environment variable.
 
 `ENABLE_GIT_SECRETS=false`
 

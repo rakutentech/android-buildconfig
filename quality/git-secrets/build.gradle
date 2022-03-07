@@ -32,7 +32,7 @@ task installGitSecretsHook{
         )
     }
 
-    def registerGitSecrets = "git secrets --register-aws --global".execute()
+    def registerGitSecrets = "git secrets --register-aws".execute()
     registerGitSecrets.consumeProcessErrorStream(b)
     printLog registerGitSecrets.text
 
