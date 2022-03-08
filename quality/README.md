@@ -101,7 +101,7 @@ dependencies {
 
 To test it, use the task : `./gradlew detekt`. See [the detekt docs](https://arturbosch.github.io/detekt/groovydsl.html) for additional configuration options.
 
-## git-leaks
+## Gitleaks
 
 Prevents you from committing passwords and other sensitive information to a git repository.
 
@@ -110,4 +110,9 @@ Prevents you from committing passwords and other sensitive information to a git 
 apply from: "../config/quality/git-leaks/build.gradle"
 ```
 
-See the [Git Leaks doc](https://github.com/zricethezav/gitleaks) for more details.
+By default, Gitleaks will use the default config to detect secrets. You can also write your own secret detection rules by following those steps:
+1- Create  `gitleaks.toml` file in the `.git/hooks` folder of your root project.
+2- Refer to the [default gitleaks config](https://github.com/zricethezav/gitleaks/blob/master/config/gitleaks.toml) for examples and advice on writing regular expressions for secret detection.
+3- **⚠** Note that this will **overwrite** the default Gitleaks config, so, if you want to keep the same rules in addition to yours, you have to copy the [default rules](https://github.com/zricethezav/gitleaks/blob/master/config/gitleaks.toml) to your config file.
+
+See the [Gitleaks doc](https://github.com/zricethezav/gitleaks) for more details.

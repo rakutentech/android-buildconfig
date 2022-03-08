@@ -12,11 +12,11 @@ task installGitLeaksHook{
     }
 
     def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d', 'gitleaks'))
-    Files.copy(
-            Paths.get(rootDir.absolutePath, 'config', 'quality', 'gitleaks', 'pre-commit'),
-            Paths.get(hookFile.absolutePath),
-            StandardCopyOption.REPLACE_EXISTING
-    )
+    hookFile.write  "#!/bin/sh\ngitleaks protect --verbose --redact --staged"
+    if(Files.exists(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'gitleaks.toml'))) {
+        hookFile.append  " -c .git/hooks/gitleaks.toml"
+    }
+
     hookFile.setExecutable(true)
 }
 

@@ -33,6 +33,7 @@ By default only [versions](versions/README.md) is added to the project. You can 
   - Jacoco
   - PMD
   - Detekt
+  - Gitleaks
 * [BuildSrc](buildSrc/README.md)
 * [Documentation](documentation/README.md)
 * [Publish](publish/README.md)
@@ -58,6 +59,9 @@ To ensure usability we follow these rules:
 * Update versions:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
+
+### 6.3.0 (2022-03-08)
+* **Feature:** Added [Gitleaks](quality/README.md#gitleaks) tool for detecting and preventing hardcoded secrets.
 
 ### 6.2.0 (2021-10-27)
 * **Feature:** Updated `compile` and `target` to API 31, and min to API 23 in `versions.gradle`
