@@ -1,0 +1,23 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+task installGitLeaksHook{
+
+    try {
+        "gitleaks version".execute()
+    } catch (IOException ignored) {
+        println 'Setup git hook: [pre-commit] Detect hardcoded secrets using Gitleaks'
+        throw new StopExecutionException("gitleaks not found (try running:  brew install gitleaks)")
+    }
+
+    def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d', 'gitleaks'))
+    Files.copy(
+            Paths.get(rootDir.absolutePath, 'config', 'quality', 'gitleaks', 'pre-commit'),
+            Paths.get(hookFile.absolutePath),
+            StandardCopyOption.REPLACE_EXISTING
+    )
+    hookFile.setExecutable(true)
+}
+
+tasks.build.dependsOn installGitLeaksHook

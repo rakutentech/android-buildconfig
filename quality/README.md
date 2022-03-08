@@ -101,17 +101,13 @@ dependencies {
 
 To test it, use the task : `./gradlew detekt`. See [the detekt docs](https://arturbosch.github.io/detekt/groovydsl.html) for additional configuration options.
 
-## git-secrets
+## git-leaks
 
 Prevents you from committing passwords and other sensitive information to a git repository.
 
 ```groovy
 // root project
-apply from: "../config/quality/git-secrets/build.gradle"
+apply from: "../config/quality/git-leaks/build.gradle"
 ```
 
-Git secrets scan is enabled by default, to disable it you can set enableGitSecrets key to false as environment variable.
-
-`ENABLE_GIT_SECRETS=false`
-
-See the [Git secrets doc](https://github.com/awslabs/git-secrets#git-secrets) for more details.
+See the [Git Leaks doc](https://github.com/zricethezav/gitleaks) for more details.
