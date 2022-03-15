@@ -1,0 +1,114 @@
+import groovy.json.JsonSlurper
+
+def mappingFileName = "v$scmVersion.version-mapping.zip"
+task zipAssets(type: Zip) {
+    subprojects.each {
+        def assetsPath = new File(rootDir, "$it.name/build/outputs/mapping").absolutePath
+        def outputDir = new File(rootDir, 'build/mapping').absolutePath
+        def nameAndVersion = "$it.name-v$scmVersion.version-mapping"
+        archiveFileName = mappingFileName
+        destinationDirectory = file(outputDir)
+
+        from(assetsPath) {
+            into nameAndVersion
+        }
+    }
+}
+
+task githubRelease(type: GithubReleases,
+        group: 'publishing',
+        description: "release for $name module version $version to Github Releases") {
+
+    dependsOn zipAssets
+
+    authToken GITHUB_RELEASES_TOKEN
+    repoOwner GITHUB_REPO_OWNER
+    repo GITHUB_REPO
+    tagName scmVersion.version
+    releaseName project.name
+    file new File("$project.rootDir","/build/mapping/${mappingFileName}")
+}
+
+
+class GithubReleases extends DefaultTask {
+
+    String authToken
+    String repoOwner
+    String repo
+    String tagName
+    String releaseName
+    File file
+
+    @TaskAction
+    void createRelease() {
+
+        /** Create a Github release.
+         * If a tag with the same name already exist,the task will fail with
+         * `Status: 422 Unprocessable Entity` server error.
+         */
+        def releaseId = postRelease()
+
+        /** Upload Release Assets.
+         * Upload the modules mappings zip file to Github Releases assets.
+         * If a file with the same name already exist,
+         * the task will fail with `Status: 422 Unprocessable Entity` server error.
+         */
+        uploadReleaseAssets(releaseId)
+
+    }
+
+
+    private long postRelease() {
+        String baseUrl = "https://api.github.com/repos"
+        String generateReleaseApi = "/${repoOwner}/${repo}/releases"
+        String body = "{" +
+                "\"tag_name\":\"$tagName\", " +
+                "\"name\":\"$releaseName v$tagName\"" +
+                "}"
+        HttpURLConnection post = new URL("${baseUrl}${generateReleaseApi}").openConnection()
+        post.requestMethod = "POST"
+        post.doOutput = true
+        post.setRequestProperty("Content-Type", "application/json")
+        post.setRequestProperty("Accept", "application/vnd.github.v3+json")
+        post.setRequestProperty("Authorization", "token ${authToken}")
+        post.outputStream.write(body.bytes)
+        post.outputStream.flush()
+
+        if(post.responseCode <= 201) {
+            def response = new JsonSlurper().parseText(post.getInputStream().text)
+            println "Successfully created release $response.id\n" +
+                    "Status $post.responseCode : $post.responseMessage\""
+            return response.id
+        } else {
+            throw new GradleException("Failed to create a release.\nServer returned status " +
+                    "$post.responseCode : $post.responseMessage")
+        }
+    }
+
+    private void uploadReleaseAssets(long releaseId) {
+        String baseUrl = "https://uploads.github.com"
+        println file.name + " " + releaseId
+        String uploadReleaseAssetsApi =
+                "/repos/$repoOwner/$repo/releases/$releaseId/assets?name=$file.name"
+        HttpURLConnection post = new URL("${baseUrl}${uploadReleaseAssetsApi}").openConnection()
+        println post.getURL()
+        post.requestMethod = "POST"
+        post.doOutput = true
+        post.setRequestProperty("Content-Type", "application/zip")
+        post.setRequestProperty("Accept", "application/vnd.github.v3+json")
+        post.setRequestProperty("Authorization", "token ${authToken}")
+        post.outputStream.write(file.bytes)
+        post.outputStream.flush()
+
+        if(post.responseCode <= 201) {
+            println "Successfully uploaded release assets.\n" +
+                    "Status $post.responseCode : $post.responseMessage\""
+        } else {
+            throw new GradleException("Failed to upload release assets.\n" +
+                    "Server returned status $post.responseCode : $post.responseMessage")
+        }
+    }
+
+}
+
+ext.GithubReleases = GithubReleases
