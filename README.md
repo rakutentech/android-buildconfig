@@ -60,7 +60,8 @@ To ensure usability we follow these rules:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
 
-### 6.3.0 (2022-03-08)
+### 6.3.0 (2022-03-15)
+
 * **Feature:** Added [Gitleaks](quality/README.md#gitleaks) tool for detecting and preventing hardcoded secrets.
 
 ### 6.2.0 (2021-10-27)
