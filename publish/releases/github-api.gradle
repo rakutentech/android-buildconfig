@@ -21,17 +21,18 @@ task githubRelease(type: GithubReleases,
 
     dependsOn zipAssets
 
-    authToken GITHUB_RELEASES_TOKEN
-    repoOwner GITHUB_REPO_OWNER
-    repo GITHUB_REPO
-    tagName scmVersion.version + new Random().nextInt()
+    baseUrl System.getenv("GITHUB_RELEASES_API_URL")
+    authToken System.getenv("GITHUB_RELEASES_TOKEN")
+    repoOwner System.getenv("GITHUB_RELEASES_REPO_OWNER")
+    repo System.getenv("GITHUB_RELEASES_REPO")
+    tagName scmVersion.version
     releaseName project.name
     file new File("$project.rootDir","/build/mapping/${mappingFileName}")
 }
 
 
 class GithubReleases extends DefaultTask {
-
+    String baseUrl
     String authToken
     String repoOwner
     String repo
@@ -62,7 +63,7 @@ class GithubReleases extends DefaultTask {
 
 
     private void postRelease() {
-        String baseUrl = "https://api.github.com/repos"
+
         String generateReleaseApi = "/${repoOwner}/${repo}/releases"
         String body = "{" +
                 "\"tag_name\":\"$tagName\", " +
@@ -90,10 +91,6 @@ class GithubReleases extends DefaultTask {
     }
 
     private void uploadReleaseAssets() {
-        String baseUrl = "https://uploads.github.com"
-        String uploadReleaseAssetsApi =
-                "/repos/$repoOwner/$repo/releases/$releaseId/assets?name=$file.name"
-        //HttpURLConnection post = new URL("${baseUrl}${uploadReleaseAssetsApi}").openConnection()
         HttpURLConnection post = new URL(uploadAssetsUrl.replace("{?name,label}", "?name=$file.name")).openConnection()
         post.requestMethod = "POST"
         post.doOutput = true

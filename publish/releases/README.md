@@ -13,9 +13,9 @@ You first need to add the following environment variables to your project:
 // the token you have generated that can be used to access the GitHub API
 // https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token.
 GITHUB_RELEASES_TOKEN="Access token"
-// the repo owner and name eg: https://github.com/{owner}/{repo}
-GITHUB_REPO_OWNER="Repository owner"
-GITHUB_REPO="Repository name"
+GITHUB_RELEASES_API_URL="https://api.github.com/repos"
+GITHUB_RELEASES_REPO_OWNER="Repository owner"
+GITHUB_RELEASES_REPO="Repository name"
 ```
 
 #### 2. Apply the plugin
