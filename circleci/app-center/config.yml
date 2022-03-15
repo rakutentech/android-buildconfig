@@ -39,3 +39,40 @@ jobs:
             --release-notes "<<parameters.notes>>"
             --token <<parameters.token>>
             --quiet
+  mapping:
+    description: Publish a symbolication mapping to App Center. This job expects that you have persisted a workspace in a previous job and it will attach the workspace at `./`.
+    parameters:
+      file:
+        description: Path of mapping file to publish.
+        type: string
+      app:
+        description: App name from App Center.
+        type: string
+      token:
+        description: Token for publishing to App Center.
+        type: string
+      version-name:
+        description: App version name.
+        type: string
+      version-code:
+        description: App version code.
+        type: integer
+    docker:
+      - image: circleci/node
+    working_directory: ~/code
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Install App Center CLI
+          command: npm init --yes && npm install appcenter-cli
+      - run:
+          name: Upload release symbolication mapping file to App Center
+          command: >
+            npx appcenter crashes upload-mappings
+            --mapping <<parameters.file>>
+            --version-name "<<parameters.version-name>>"
+            --version-code <<parameters.version-code>>
+            --app <<parameters.app>>
+            --token <<parameters.token>>
+            --quiet

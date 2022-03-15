@@ -95,6 +95,10 @@ Finally, when running your job you can convert this base64 string back into a fi
 
 ## Versions
 
+### 0.3.0 (2022-01-25)
+
+- Update docker image to `android:api-30`. This docker image uses Java 11, so your project must support building with Java 11
+
 ### 0.2.1 (2021-03-08)
 
 - Fix `after-prepare-steps` property for the `publish` job.

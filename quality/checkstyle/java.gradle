@@ -39,13 +39,7 @@ task reformatJavaSources(
 
 task installPrecommitHook {
   doLast {
-    def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit'))
-    if(hookFile.exists()) {
-      Files.copy(
-          Paths.get(hookFile.absolutePath),
-          Paths.get(hookFile.parent, "${hookFile.name}.${new Date().format('yyyymmdd-HH:mm')}.backup")
-      )
-    }
+    def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d', 'check-style'))
     Files.copy(
         Paths.get(rootDir.absolutePath, 'config', 'quality', 'checkstyle', 'pre-commit'),
         Paths.get(hookFile.absolutePath),
