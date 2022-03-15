@@ -24,7 +24,7 @@ task githubRelease(type: GithubReleases,
     authToken GITHUB_RELEASES_TOKEN
     repoOwner GITHUB_REPO_OWNER
     repo GITHUB_REPO
-    tagName scmVersion.version
+    tagName scmVersion.version + new Random().nextInt()
     releaseName project.name
     file new File("$project.rootDir","/build/mapping/${mappingFileName}")
 }
@@ -39,6 +39,9 @@ class GithubReleases extends DefaultTask {
     String releaseName
     File file
 
+    private Long releaseId
+    private String uploadAssetsUrl
+
     @TaskAction
     void createRelease() {
 
@@ -46,19 +49,19 @@ class GithubReleases extends DefaultTask {
          * If a tag with the same name already exist,the task will fail with
          * `Status: 422 Unprocessable Entity` server error.
          */
-        def releaseId = postRelease()
+        postRelease()
 
         /** Upload Release Assets.
          * Upload the modules mappings zip file to Github Releases assets.
          * If a file with the same name already exist,
          * the task will fail with `Status: 422 Unprocessable Entity` server error.
          */
-        uploadReleaseAssets(releaseId)
+        uploadReleaseAssets()
 
     }
 
 
-    private long postRelease() {
+    private void postRelease() {
         String baseUrl = "https://api.github.com/repos"
         String generateReleaseApi = "/${repoOwner}/${repo}/releases"
         String body = "{" +
@@ -78,20 +81,20 @@ class GithubReleases extends DefaultTask {
             def response = new JsonSlurper().parseText(post.getInputStream().text)
             println "Successfully created release $response.id\n" +
                     "Status $post.responseCode : $post.responseMessage\""
-            return response.id
+            releaseId = response.id
+            uploadAssetsUrl = response.upload_url
         } else {
             throw new GradleException("Failed to create a release.\nServer returned status " +
                     "$post.responseCode : $post.responseMessage")
         }
     }
 
-    private void uploadReleaseAssets(long releaseId) {
+    private void uploadReleaseAssets() {
         String baseUrl = "https://uploads.github.com"
-        println file.name + " " + releaseId
         String uploadReleaseAssetsApi =
                 "/repos/$repoOwner/$repo/releases/$releaseId/assets?name=$file.name"
-        HttpURLConnection post = new URL("${baseUrl}${uploadReleaseAssetsApi}").openConnection()
-        println post.getURL()
+        //HttpURLConnection post = new URL("${baseUrl}${uploadReleaseAssetsApi}").openConnection()
+        HttpURLConnection post = new URL(uploadAssetsUrl.replace("{?name,label}", "?name=$file.name")).openConnection()
         post.requestMethod = "POST"
         post.doOutput = true
         post.setRequestProperty("Content-Type", "application/zip")
