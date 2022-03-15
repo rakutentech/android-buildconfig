@@ -59,6 +59,10 @@ To ensure usability we follow these rules:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
 
+### 6.2.0 (2022-03-15)
+
+* **Feature:** Added [Github Release configuration](publish/releases/README.md) for releases and release assets creation.
+
 ### 6.1.0 (2021-03-05)
 * **Feature:** Added publication configuration for Java libraries.
 
