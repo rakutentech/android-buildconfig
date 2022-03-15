@@ -55,15 +55,17 @@ To ensure usability we follow these rules:
 * Major version changes must also provide a migration guide from the previous major version
 
 ## Versions <a name="versions"></a>
+
+### 7.1.0 (2022-03-15)
+
+* **Feature:** Added [Github Release configuration](publish/releases/README.md) for releases and release assets creation.
+* **Feature:** Added [Gitleaks](quality/README.md#gitleaks) tool for detecting and preventing hardcoded secrets.
+
 ### 7.0.0
 * Update versions:
   * AGP 4.0.2 (requires Gradle 6.1.1+).
   * Targets (and builds with) SDK 30.
 * **Updated:** Support for Dokka v1.6.10. This is a BREAKING change. You will need to update your Dokka version and change your dokka configuration as described in the [documentation README](documentation/README.md)
-
-### 6.3.0 (2022-03-15)
-
-* **Feature:** Added [Gitleaks](quality/README.md#gitleaks) tool for detecting and preventing hardcoded secrets.
 
 ### 6.2.0 (2021-10-27)
 * **Feature:** Updated `compile` and `target` to API 31, and min to API 23 in `versions.gradle`

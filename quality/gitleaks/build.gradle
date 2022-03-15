@@ -4,6 +4,11 @@ import java.nio.file.StandardCopyOption
 
 task installGitLeaksHook{
 
+    def enableGitleaks = System.getenv("ENABLE_GITLEAKS") ?: true
+    if(!enableGitleaks) {
+        return
+    }
+
     try {
         "gitleaks version".execute()
     } catch (IOException ignored) {
