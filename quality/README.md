@@ -106,7 +106,7 @@ To test it, use the task : `./gradlew detekt`. See [the detekt docs](https://art
 Prevents you from committing passwords and other sensitive information to a git repository.
 
 ```groovy
-// root project
+// sub project
 apply from: "../config/quality/git-leaks/build.gradle"
 ```
 
