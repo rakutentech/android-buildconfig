@@ -39,6 +39,10 @@ task reformatJavaSources(
 
 task installPrecommitHook {
   doLast {
+    if(tasks.findByName("installLocalGitHook") == null) {
+      apply from: "$CONFIG.configDir/git-hooks/build.gradle"
+    }
+
     def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d', 'check-style'))
     Files.copy(
         Paths.get(rootDir.absolutePath, 'config', 'quality', 'checkstyle', 'pre-commit'),

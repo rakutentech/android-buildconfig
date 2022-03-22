@@ -1,11 +1,10 @@
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
 
-task installGitLeaksHook{
+task installGitLeaksHook {
 
-    def enableGitleaks = System.getenv("ENABLE_GITLEAKS") ?: true
-    if(!enableGitleaks) {
+    def enableGitleaks = System.getenv("ENABLE_GITLEAKS")
+    if(enableGitleaks == "false") {
         return
     }
 
@@ -16,6 +15,9 @@ task installGitLeaksHook{
         throw new StopExecutionException("gitleaks not found (try running:  brew install gitleaks)")
     }
 
+    if(tasks.findByName("installLocalGitHook") == null) {
+        apply from: "$CONFIG.configDir/git-hooks/build.gradle"
+    }
     def hookFile = file(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'pre-commit.d', 'gitleaks'))
     hookFile.write  "#!/bin/sh\ngitleaks protect --verbose --redact --staged"
     if(Files.exists(Paths.get(rootDir.absolutePath, '.git', 'hooks', 'gitleaks.toml'))) {

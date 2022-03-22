@@ -9,7 +9,6 @@ buildscript {
 }
 
 // Apply all configuration files
-apply from: "$CONFIG.configDir/git-hooks/build.gradle"
 apply from: "$CONFIG.configDir/versions/versions.gradle"
 apply from: "$CONFIG.configDir/versions/repositories.gradle"
 
