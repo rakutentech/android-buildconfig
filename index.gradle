@@ -1,3 +1,4 @@
+
 buildscript {
   ext.CONFIG = [
       configDir: getSourceFile().parent,
@@ -10,3 +11,5 @@ buildscript {
 // Apply all configuration files
 apply from: "$CONFIG.configDir/versions/versions.gradle"
 apply from: "$CONFIG.configDir/versions/repositories.gradle"
+
+
