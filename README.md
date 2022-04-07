@@ -57,7 +57,7 @@ To ensure usability we follow these rules:
 ## Versions <a name="versions"></a>
 
 ### 8.0.0 (2022-04-07)
-* **Breaking Change:** Added Support for building with Java 11. You will need to update your JDK to version 11.
+* **Breaking Change:** Added Support for building with Java 11. You will need to set your JDK version to 11.
 * **Updated** Detekt version to 1.19.0.
 * **Updated** Android Gradle plugin version to 7.1.0.
 
