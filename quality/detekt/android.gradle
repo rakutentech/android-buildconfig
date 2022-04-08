@@ -1,6 +1,7 @@
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
 detekt {
+    failFast = false
     input = files(projectDir)
     config = rootProject.files('config/quality/detekt/detekt-config.yml')
     reports {

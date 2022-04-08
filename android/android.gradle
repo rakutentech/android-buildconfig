@@ -1,3 +1,5 @@
+import groovy.ui.SystemOutputInterceptor
+
 android {
   compileSdkVersion CONFIG.versions.android.sdk.compile
 
@@ -5,6 +7,8 @@ android {
     minSdkVersion CONFIG.versions.android.sdk.min
     targetSdkVersion CONFIG.versions.android.sdk.target
     versionName project.version
+
+    buildConfigField("String","VERSION_NAME", "\"$project.version\"")
   }
 
   compileOptions {
