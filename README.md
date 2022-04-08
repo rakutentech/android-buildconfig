@@ -58,8 +58,9 @@ To ensure usability we follow these rules:
 
 ### 8.0.0 (2022-04-07)
 * **Breaking Change:** Added Support for building with Java 11. You will need to set your JDK version to 11.
-* **Updated** Detekt version to 1.19.0.
 * **Updated** Android Gradle plugin version to 7.1.0.
+* **Updated** Android Kotlin plugin version to 1.5.21.
+* **Updated** Detekt version to 1.19.0.
 
 ### 7.1.0 (2022-03-15)
 * **Feature:** Added [Github Release configuration](publish/releases/README.md) for releases and release assets creation.
