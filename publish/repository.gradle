@@ -1,0 +1,28 @@
+def repo = project.hasProperty('REPOSITORY_NAME') ? project.REPOSITORY_NAME : System.getenv('REPOSITORY_NAME')
+def user = project.hasProperty('REPOSITORY_USER') ? project.REPOSITORY_USER : System.getenv('REPOSITORY_USER')
+def password = project.hasProperty('REPOSITORY_PASSWORD') ? project.REPOSITORY_PASSWORD : System.getenv('REPOSITORY_PASSWORD')
+def url = project.hasProperty('REPOSITORY_URL') ? project.REPOSITORY_URL : System.getenv('REPOSITORY_URL')
+
+publishing {
+  repositories {
+    maven {
+      it.name repo
+      credentials {
+        it.username user
+        it.password password
+      }
+      it.url url
+    }
+  }
+}
+
+task ensureRepositoryCredentials {
+  doFirst {
+    if (!repo?.trim() || !user?.trim() || !password?.trim() || !url?.trim()) {
+      throw new GradleException("You must define environment variables for " +
+              "REPOSITORY_USER, REPOSITORY_PASSWORD, REPOSITORY_URL, and REPOSITORY_NAME.")
+    }
+  }
+}
+
+publish.dependsOn ensureRepositoryCredentials

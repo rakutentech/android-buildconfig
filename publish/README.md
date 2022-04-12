@@ -1,6 +1,6 @@
 # Publishing
 
-These configurations can be used for publishing AARs to [Maven Central](https://central.sonatype.org/) or an [Artifactory](https://jfrog.com/artifactory/) Repo. This uses the [maven-publish-plugin](https://developer.android.com/studio/build/maven-publish-plugin) which is built-in to AGP 3.6.0+.
+These configurations can be used for publishing AARs to [Maven Central](https://central.sonatype.org/), [Artifactory](https://jfrog.com/artifactory/) Repo, or Github Packages. This uses the [maven-publish-plugin](https://developer.android.com/studio/build/maven-publish-plugin) which is built-in to AGP 3.6.0+.
 
 ## Setup
 
@@ -18,13 +18,13 @@ MAVEN_CENTRAL_SIGNING_PASSWORD=your_signing_password
 MAVEN_CENTRAL_SIGNING_KEY_RING_FILE=path/to/your/gpg-private-key.gpg
 ```
 
-#### Artifactory
+#### Artifactory/ GitHub Packages
 
 ```bash
-ARTIFACTORY_USER=username
-ARTIFACTORY_PASSWORD=password
-ARTIFACTORY_URL=https://www.example.com
-ARTIFACTORY_REPO=oss-snapshot-local
+REPOSITORY_USER=username
+REPOSITORY_PASSWORD=password
+REPOSITORY_URL=https://www.example.com
+REPOSITORY_NAME=oss-snapshot-local
 ```
 
 ### 2. Add Gradle properties for configuration
@@ -83,9 +83,9 @@ publishing {
   + Configures publication for `component.release` as `from` field - your project's `AAR`. (Or configures publication for `component.java` in the case of a Java library).
   + Add artifacts for the JavaDocs (for Java projects) or KDocs (for Kotlin projects) and a JAR containing your project's source code to your publications.
 
-### 4. Configure publishing to Maven Central or Artifactory
+### 4. Configure publishing to Maven Central or Artifactory/ GitHub Packages
 
-Next, you can apply either the `config/publish/maven-central.gradle` or `config/publish/artifactory.gradle` scripts to configure the repos where your artifacts will be published.
+Next, you can apply either the `config/publish/maven-central.gradle` or `config/publish/repository.gradle` scripts to configure the repos where your artifacts will be published.
 
 #### Maven Central
 
@@ -99,23 +99,23 @@ if (isSnapshot) {
 apply from: '../config/publish/maven-central.gradle'
 ```
 
-#### Artifactory
+#### Artifactory/ GitHub Packages
 
 If you wish to publish snapshots, you can publish to your snapshot URL if your current version is a snapshot version.
 
 ```groovy
 def isSnapshot = project.version.contains('-')
 if (isSnapshot) {
-  ext["ARTIFACTORY_URL"] = System.getenv("ARTIFACTORY_URL_SNAPSHOT")
+  ext["REPOSITORY_URL"] = System.getenv("REPOSITORY_URL_SNAPSHOT")
 } else {
-  ext["ARTIFACTORY_URL"] = System.getenv("ARTIFACTORY_URL_RELEASE")
+  ext["REPOSITORY_URL"] = System.getenv("REPOSITORY_URL_RELEASE")
 }
-apply from: '../config/publish/artifactory.gradle'
+apply from: '../config/publish/repository.gradle'
 ```
 
 #### This script will do:
 
-+ Configure the repos where your artifacts will be published - Maven Central or Artifactory.
++ Configure the repos where your artifacts will be published - Maven Central or Artifactory/ GitHub Packages.
 + Uses the credentials you've set as environment variables.
 + If Maven Central, configures the PGP signing key as defined in your environment variables.
 
@@ -123,28 +123,28 @@ apply from: '../config/publish/artifactory.gradle'
 
 ### 1. Different repository details for snapshot version
 
-You can set different Artifactory details for snapshot and release version by setting the following Gradle Properties.
-* ARTIFACTORY_REPO
-* ARTIFACTORY_USER
-* ARTIFACTORY_PASSWORD
-* ARTIFACTORY_URL
+You can set different repository details for snapshot and release version by setting the following Gradle Properties.
+* REPOSITORY_NAME
+* REPOSITORY_USER
+* REPOSITORY_PASSWORD
+* REPOSITORY_URL
 
 If the gradle property is not set, the System Environment will be used.
 
 ```groovy
 def isSnapshot = project.version.contains('-')
 if (isSnapshot) {
-  project.ext.ARTIFACTORY_REPO="repo-snapshot-local"
-  project.ext.ARTIFACTORY_USER="snapshot_user"
-  project.ext.ARTIFACTORY_PASSWORD="snapshot_password"
-  project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-snapshot-local"
+  project.ext.REPOSITORY_NAME="repo-snapshot-local"
+  project.ext.REPOSITORY_USER="snapshot_user"
+  project.ext.REPOSITORY_PASSWORD="snapshot_password"
+  project.ext.REPOSITORY_URL="https://oss.jfrog.org/artifactory/oss-snapshot-local"
 } else {
-  project.ext.ARTIFACTORY_REPO="repo-release-local"
-  project.ext.ARTIFACTORY_USER="release_user"
-  project.ext.ARTIFACTORY_PASSWORD="release_password"
-  project.ext.ARTIFACTORY_URL="https://oss.jfrog.org/artifactory/oss-release-local"
+  project.ext.REPOSITORY_NAME="repo-release-local"
+  project.ext.REPOSITORY_USER="release_user"
+  project.ext.REPOSITORY_PASSWORD="release_password"
+  project.ext.REPOSITORY_URL="https://oss.jfrog.org/artifactory/oss-release-local"
 }
-apply from: '../config/publish/artifactory.gradle'
+apply from: '../config/publish/repository.gradle'
 ```
 
 ## Advanced Configuration
