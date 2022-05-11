@@ -56,7 +56,7 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 
-### 9.0.1 (2022-05-11)
+### 9.1.0 (2022-05-11)
 * **Updated** Android Gradle plugin version to 7.2.0.
 
 ### 9.0.0 (2022-04-12)
