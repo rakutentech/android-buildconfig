@@ -4,6 +4,7 @@ import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.ErrorCollector
 import org.codehaus.groovy.control.SourceUnit
+import org.gradle.api.tasks.Input
 
 import static com.rakuten.tech.tool.Functions.findAllStatements
 
