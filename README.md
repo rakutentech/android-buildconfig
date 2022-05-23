@@ -56,8 +56,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 
-### 9.1.0 (2022-05-11)
+### 9.1.0 (2022-05-23)
 * **Updated** Android Gradle plugin version to 7.2.0.
+* **Updated** Add paratmeter annotation to groovy tasks.
 
 ### 9.0.0 (2022-04-12)
 * **Breaking Change:** Renamed `artifactory.gradle` to `repository.gradle`, and project config keys for publishing.

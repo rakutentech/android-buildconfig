@@ -9,8 +9,8 @@ import static com.rakuten.tech.tool.Functions.findAllStatements
 
 class GradleBuildScript {
   SourceUnit src
-  def compileDependencies
-  def buildScriptDependencies
+  @Input def compileDependencies = []
+  @Input def buildScriptDependencies = []
 
   GradleBuildScript(File sourceFile) {
     CompilerConfiguration configuration = new CompilerConfiguration();

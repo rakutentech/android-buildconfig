@@ -26,7 +26,7 @@ public class CheckGradleFilesForSnapshotDependencies extends DefaultTask {
    *          ]
    * ```
    */
-  def exclude
+  @Input def exclude = []
 
   CheckGradleFilesForSnapshotDependencies() {
     description = "Check build files for SNAPSHOT dependencies"
