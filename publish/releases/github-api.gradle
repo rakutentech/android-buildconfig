@@ -32,12 +32,19 @@ task githubRelease(type: GithubReleases,
 
 
 class GithubReleases extends DefaultTask {
+    @Internal
     String baseUrl
+    @Internal
     String authToken
+    @Internal
     String repoOwner
+    @Internal
     String repo
+    @Internal
     String tagName
+    @Internal
     String releaseName
+    @Internal
     File file
 
     private Long releaseId
