@@ -1,0 +1,27 @@
+# Check if branch name follows format
+type_pattern = /(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)/
+ticket_pattern = /(MAG|SDKCF)-\d{3,5}/
+desc_pattern = /[a-z0-9]+(?:_+[a-z0-9]+)*$/
+branch_name_pattern_1 = /^#{type_pattern}\/#{ticket_pattern}_#{desc_pattern}/
+branch_name_pattern_2 =  /^#{type_pattern}\/#{desc_pattern}/
+branch_name_pattern_3 = /^release\/[\w]+/ # Less stricter check for release branches (can contain special releases not only using version name)
+
+branch_name = github.branch_for_head
+is_branch_compliant = branch_name.match(branch_name_pattern_1) || branch_name.match(branch_name_pattern_2) || branch_name.match(branch_name_pattern_3)
+
+# Check if target coverage is reached
+tag_name = ENV['BITRISE_GIT_TAG']
+is_release = tag_name != nil && tag_name != ""
+
+sdk_paths = ENV['SDK_PATHS']
+jacoco.minimum_project_coverage_percentage = 80
+
+for sdk_module in sdk_paths.split(",") do
+    jacoco.report(is_release ? "#{sdk_module}/build/reports/jacoco/jacocoReleaseReport/jacocoReleaseReport.xml" :
+                               "#{sdk_module}/build/reports/jacoco/jacocoDebugReport/jacocoDebugReport.xml",
+                               fail_no_coverage_data_found: false)
+end
+
+# Throw descriptive warnings
+warn("Big PR") if git.lines_of_code > 1000
+warn("Branch name \"#{branch_name}\" must match format: `<type>/<ticket-no>_<short_desc>` or `<type>/<ticket-no>_<short_desc>` or `release/<version or desc>`") if !is_branch_compliant
