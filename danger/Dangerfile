@@ -24,4 +24,4 @@ end
 
 # Throw descriptive warnings
 warn("Big PR") if git.lines_of_code > 1000
-warn("Branch name \"#{branch_name}\" must match format: `<type>/<ticket-no>_<short-desc>` or `<type>/<ticket-no>_<short-desc>` or `release/<version or desc>`") if !is_branch_compliant
+warn("Branch name \"#{branch_name}\" must match format: `<type>/<ticket-no>_<short-desc>` or `<type>/<short-desc>` or `release/<version or desc>`") if !is_branch_compliant
