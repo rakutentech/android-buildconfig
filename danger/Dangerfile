@@ -1,9 +1,9 @@
 # Check if branch name follows format
 type_pattern = /(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)/
-ticket_pattern = /(MAG|SDKCF)-\d{3,5}/ # Main single ticket in capital letters that can connect this branch to a board tracker ID
+ticket_pattern = ENV['DANGER_TICKET_NUM_REGEX'] # Main single ticket number regex
 desc_pattern = /[a-z0-9]+(?:-+[a-z0-9]+)*$/ # Short description in small letters and separated by dashes to easily identify the purpose of branch at a glance
 branch_name_pattern_1 = /^#{type_pattern}\/#{ticket_pattern}_#{desc_pattern}/
-branch_name_pattern_2 =  /^#{type_pattern}\/#{desc_pattern}/
+branch_name_pattern_2 = /^#{type_pattern}\/#{desc_pattern}/
 branch_name_pattern_3 = /^release\/[\w]+/ # Less stricter check for release branches (can contain special releases not only using version name)
 
 branch_name = github.branch_for_head
@@ -13,10 +13,10 @@ is_branch_compliant = branch_name.match(branch_name_pattern_1) || branch_name.ma
 tag_name = ENV['BITRISE_GIT_TAG']
 is_release = tag_name != nil && tag_name != ""
 
-sdk_paths = ENV['SDK_PATHS']
+sdk_modules = ENV['DANGER_MODULES']
 jacoco.minimum_project_coverage_percentage = 80
 
-for sdk_module in sdk_paths.split(",") do
+for sdk_module in sdk_modules.split(",") do
     jacoco.report(is_release ? "#{sdk_module}/build/reports/jacoco/jacocoReleaseReport/jacocoReleaseReport.xml" :
                                "#{sdk_module}/build/reports/jacoco/jacocoDebugReport/jacocoDebugReport.xml",
                                fail_no_coverage_data_found: false)
