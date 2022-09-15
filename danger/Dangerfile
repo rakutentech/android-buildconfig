@@ -1,4 +1,18 @@
+########################
+# Generic checks
+########################
+warn("Big PR.") if git.lines_of_code > 1000
+
+has_app_changes = !git.modified_files.grep(/src\/main/).empty?
+has_test_changes = !git.modified_files.grep(/src\/test/).empty?
+
+if has_app_changes && !has_test_changes
+  warn('Tests were not updated.')
+end
+
+########################
 # Check if branch name follows format
+########################
 type_pattern = /(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)/
 ticket_pattern = ENV['DANGER_TICKET_NUM_REGEX'] # Main single ticket number regex
 desc_pattern = /[a-z0-9]+(?:-+[a-z0-9]+)*$/ # Short description in small letters and separated by dashes to easily identify the purpose of branch at a glance
