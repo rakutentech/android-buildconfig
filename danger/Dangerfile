@@ -34,15 +34,15 @@ if /^(?<type>(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)):
   if /^(?<nonimperativeword>(\w+(ed|es)))/ =~ subject
     warn "Verb \"#{nonimperativeword}\" in the PR title must be in imperative tense."
   end
-  if /\((?<ticketnos>((MAG|SDKCF)-\d{3,5}(,\s)?)+)\)$/ =~ subject
+  if /\((?<ticketnos>(#{ticket_pattern}(,\s)?)+)\)$/ =~ subject
     if (has_app_changes && git.modified_files.grep(/(USERGUIDE.md|CHANGELOG.md)/).empty?)
       warn "Should include a CHANGELOG or USERGUIDE entry for #{ticketnos}."
     end
   else
-    warn "PR title \"#{github.pr_title}\" should append ticket number(s) e.g. (SDKCF-1234, SDKCF-1235)."
+    warn "PR title \"#{github.pr_title}\" should append ticket number(s)."
   end
 else
-  fail "PR title \"#{github.pr_title}\" must match format: `type: subject (SDKCF-1234).`"
+  fail "PR title \"#{github.pr_title}\" must match format: `<type>: <subject> (<ticket-no>).`"
   message "`type` must be one of `fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert`"
 end
 
