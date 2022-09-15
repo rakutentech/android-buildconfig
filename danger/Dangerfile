@@ -42,7 +42,7 @@ if /^(?<type>(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)):
     warn "PR title \"#{github.pr_title}\" should append ticket number(s)."
   end
 else
-  fail "PR title \"#{github.pr_title}\" must match format: `<type>: <subject> (<ticket-no>).`"
+  warn "PR title \"#{github.pr_title}\" must match format: `<type>: <subject> (<ticket-no>).`"
   message "`type` must be one of `fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert`"
 end
 
