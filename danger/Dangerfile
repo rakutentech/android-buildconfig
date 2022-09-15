@@ -9,7 +9,47 @@ branch_name_pattern_3 = /^release\/[\w]+/ # Less stricter check for release bran
 branch_name = github.branch_for_head
 is_branch_compliant = branch_name.match(branch_name_pattern_1) || branch_name.match(branch_name_pattern_2) || branch_name.match(branch_name_pattern_3)
 
+warn("Branch name \"#{branch_name}\" should match format: `<type>/<ticket-no>_<short-desc>` or `<type>/<short-desc>` or `release/<version or desc>`.") if !is_branch_compliant
+
+########################
+# Check if commit message follows format.
+# Assuming that repos use the "Squash and merge" option, this will only check the PR title which becomes the final commit message,
+# instead of traversing all of the commit messages.
+########################
+if /^(?<type>(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)): (?<subject>[\w\W]+)$/ =~ github.pr_title
+  if /^(?<nonimperativeword>(\w+(ed|es)))/ =~ subject
+    warn "Verb \"#{nonimperativeword}\" in the PR title must be in imperative tense."
+  end
+  if /\((?<ticketnos>((MAG|SDKCF)-\d{3,5}(,\s)?)+)\)$/ =~ subject
+    if (has_app_changes && git.modified_files.grep(/(USERGUIDE.md|CHANGELOG.md)/).empty?)
+      warn "Should include a CHANGELOG or USERGUIDE entry for #{ticketnos}."
+    end
+  else
+    warn "PR title \"#{github.pr_title}\" should append ticket number(s) e.g. (SDKCF-1234, SDKCF-1235)."
+  end
+else
+  fail "PR title \"#{github.pr_title}\" must match format: `type: subject (SDKCF-1234).`"
+  message "`type` must be one of `fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert`"
+end
+
+########################
+# Code checks
+########################
+# Check for prints
+modified_files = git.modified_files.select { |path| !path.nil? && !path.include?("=>") }
+modified_files = modified_files.reject { |f|  /.*\.(tgz|png|jpg|gem|md|gradle)/.match(File.extname(f)) }
+modified_files = modified_files.reject { |f| git.deleted_files.include?(f) }
+modified_files.each do |file|
+  file_diff = git.diff_for_file(file)
+  result_matches = file_diff.patch.scan(/(\+*println\()|(\+*print\()/)
+  result_matches.each do |match|
+    warn("`print` was added in `#{file}`. Delete or use the logging utility.") if match
+  end
+end
+
+########################
 # Check if target coverage is reached
+########################  
 tag_name = ENV['BITRISE_GIT_TAG']
 is_release = tag_name != nil && tag_name != ""
 
@@ -21,7 +61,3 @@ for sdk_module in sdk_modules.split(",") do
                                "#{sdk_module}/build/reports/jacoco/jacocoDebugReport/jacocoDebugReport.xml",
                                fail_no_coverage_data_found: false)
 end
-
-# Throw descriptive warnings
-warn("Big PR") if git.lines_of_code > 1000
-warn("Branch name \"#{branch_name}\" should match format: `<type>/<ticket-no>_<short-desc>` or `<type>/<short-desc>` or `release/<version or desc>`") if !is_branch_compliant
