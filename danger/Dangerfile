@@ -36,7 +36,7 @@ if /^(?<type>(fix|feat|refactor|improve|build|ci|docs|chore|test|tests|revert)):
   end
   if /\((?<ticketnos>(#{ticket_pattern}(,\s)?)+)\)$/ =~ subject
     if (has_app_changes && git.modified_files.grep(/(USERGUIDE.md|CHANGELOG.md)/).empty?)
-      warn "Should include a CHANGELOG or USERGUIDE entry for #{ticketnos}."
+      warn "Should include a CHANGELOG or USERGUIDE entry."
     end
   else
     warn "PR title \"#{github.pr_title}\" should append ticket number(s)."
