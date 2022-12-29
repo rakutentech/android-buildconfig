@@ -56,6 +56,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 
+### 9.2.1 (2022-12-29)
+* Quality/Detekt: removed usage of obsolete `fail-fast` and `test-pattern` properties.
+
 ### 9.2.0 (2022-09-16)
 * **Feature:** Added Dangerfile that can be used for branch naming, commit, and other code rules.
 
