@@ -30,9 +30,9 @@ def addJacocoTask(variant) {
   jacocoTask.description = "Generate Jacoco Report for variant $variantName"
 
   jacocoTask.reports {
-    csv.enabled false
-    html.enabled true
-    xml.enabled true
+    csv.required = false
+    html.required = true
+    xml.required = true
   }
 
   def excludedFiles = [

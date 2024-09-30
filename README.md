@@ -56,6 +56,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 
+### 9.3.0 (In Progress)
+* Bumped Android Gradle plugin version to 8.4.2.
+
 ### 9.2.1 (2022-12-29)
 * Quality/Detekt: removed usage of obsolete `fail-fast` and `test-pattern` properties.
 
