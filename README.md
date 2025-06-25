@@ -56,6 +56,9 @@ To ensure usability we follow these rules:
 
 ## Versions <a name="versions"></a>
 
+### 9.3.0 (2025-06-25)
+* **Updated**: Publishing repository URLs due to [OSSRH being sunset](https://central.sonatype.org/news/20250326_ossrh_sunset/).
+
 ### 9.2.1 (2022-12-29)
 * Quality/Detekt: removed usage of obsolete `fail-fast` and `test-pattern` properties.
 

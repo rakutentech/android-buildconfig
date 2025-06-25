@@ -14,14 +14,13 @@ def isSnapshot = property("MAVEN_CENTRAL_IS_SNAPSHOT")
 publishing {
   repositories {
     maven {
-      it.name "MavenCentral${isSnapshot ? "Snapshot" : "Staging"}"
       credentials {
         it.username user
         it.password password
       }
       it.url isSnapshot
-              ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-              : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+              ? "https://central.sonatype.com/repository/maven-snapshots/"
+              : "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/"
     }
   }
 }
