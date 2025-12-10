@@ -1,5 +1,13 @@
 apply from: "$CONFIG.configDir/publish/base-artifact.gradle"
 
+android {
+  publishing {
+    singleVariant("release") {
+      withSourcesJar()
+    }
+  }
+}
+
 task androidSourceJar(type: Jar) {
   from android.sourceSets.main.java.srcDirs
   archiveClassifier = 'sources'
@@ -10,9 +18,5 @@ ext.androidArtifact = { Map config ->
 
   return baseArtifact(config) << {
     from config.get('from') ?: components.release
-
-    if (!config.get('excludeSourceJar')) {
-      artifact androidSourceJar
-    }
   }
 }
