@@ -7,7 +7,7 @@
 ext.CONFIG.versions = [
     // Java compatibility target version
     java      : '17',
-    kotlin    : '1.9.0',
+    kotlin    : '1.8.0',
 
     // Android plugins, tools, SDK and libraries
     android   : [
