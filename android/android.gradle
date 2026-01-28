@@ -16,6 +16,10 @@ android {
     targetCompatibility JavaVersion.toVersion(CONFIG.versions.java)
   }
 
+  buildFeatures {
+    buildConfig = true
+  }
+
   testOptions.unitTests.all {
     maxParallelForks 2
 
