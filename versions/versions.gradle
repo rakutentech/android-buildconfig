@@ -18,8 +18,8 @@ ext.CONFIG.versions = [
         ],
         plugin: '8.6.0',
         sdk      : [
-            compile: 35,
-            target : 35,
+            compile: 36,
+            target : 36,
             min    : 23,
         ],
     ],
