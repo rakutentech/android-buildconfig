@@ -15,7 +15,7 @@ To keep all our libraries' transitive dependencies in sync we use this shared ve
 buildscript {
   apply from: "config/index.gradle"
   repositories {
-    jcenter()
+    mavenCentral()
     jitpack()
     gradle()
   }
